@@ -1,0 +1,14 @@
+@startuml
+title Student Roster MVC II
+App -> Controller : run()
+Controller -> View : displayCreateStudentBanner()
+Controller -> View : getNewStudentsInfo()
+View --> Controller : Student
+Controller -> Service : createStudent(Student)
+Service -> Service : validates Student
+Service -> Dao : addStudent(student.getStudentId(), Student)
+Dao -> Dao : loadRoster();
+Service -> AuditDao : writeAuditEntry(student.getStudentId())
+AuditDao -> AuditDao : write to audit file
+Controller -> View: displayCreateSuccessBanner()
+@enduml

@@ -96,6 +96,8 @@ public class ClassRosterController {
                 view.displayErrorMessage(e.getMessage());
             }
         } while (hasErrors);
+        
+        //useful to return the student obj sometimes, will see this later
     }
 
     /**
