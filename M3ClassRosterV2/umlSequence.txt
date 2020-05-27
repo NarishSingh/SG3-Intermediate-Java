@@ -1,14 +1,90 @@
 @startuml
-title Student Roster MVC II
+title Class Roster MVC II - createStudent Sequence
+
 App -> Controller : run()
-Controller -> View : displayCreateStudentBanner()
-Controller -> View : getNewStudentsInfo()
+
+Controller -> View : getNewStudentInfo()
 View --> Controller : Student
-Controller -> Service : createStudent(Student)
+
+controller -> service: createStudent()
 Service -> Service : validates Student
-Service -> Dao : addStudent(student.getStudentId(), Student)
-Dao -> Dao : loadRoster();
-Service -> AuditDao : writeAuditEntry(student.getStudentId())
-AuditDao -> AuditDao : write to audit file
-Controller -> View: displayCreateSuccessBanner()
+service -> dao: addStudent()
+dao -> service: Student
+
+service -> auditDao: writeAuditEntry()
+auditDao -> service: void
+
+service -> controller: void `can be Student obj
+
+controller -> view: displayCreateSuccessBanner()
+view -> controller: void
+
+@enduml
+
+@startuml
+title Class Roster MVC II - listStudent Sequence
+
+View -> Controller
+
+Controller -> View: displayDisplayAllBanner()
+View -> Controller: void
+
+Controller -> Service: getAllStudents()
+Service -> studentDao: getAllStudents()
+studentDao --> studentDao: loadRoster() 
+studentDao -> Service: List<Student>
+Service -> Controller: List<Student>
+
+Controller -> View: displayStudentList(List<Student>)
+
+View -> Controller: void
+
+@enduml
+
+@startuml
+title Class Roster MVC II - removeStudent Sequence
+
+App -> Controller : run()
+
+Controller -> View: displayRemoveStudentBanner()
+View -> Controller: void
+
+Controller -> View: getStudentIDChoice()
+View -> Controller: studentID
+
+Controller -> Service: removeStudent(studentID)
+Service -> studentDao: removeStudent(studentID)
+studentDao --> studentDao: loadRoster()
+studentDao --> studentDao: removedStudent
+studentDao --> studentDao: writeRoster()
+studentDao -> Service: removedStudent
+Service -> auditDao: writeAuditEntry(entry)
+auditDao -> Service: void
+
+Service -> Controller: removedStudent
+
+Controller -> View: displayRemoveSuccessBanner()
+
+
+@enduml
+
+@startuml
+title Class Roster MVC II - viewStudent Sequence
+
+View -> Controller
+Controller -> View: displayDisplayStudentBanner()
+View -> Controller: void
+
+Controller -> View: getStudentIDChoice()
+View -> Controller: studentID
+
+Controller -> Service: getStudent(studentID)
+Service -> studentDao: getStudent(studentID)
+studentDao --> studentDao: loadRoster()
+studentDao -> Service: student
+
+Service -> Controller: student
+
+Controller -> View: displayStudent(student)
+
 @enduml
