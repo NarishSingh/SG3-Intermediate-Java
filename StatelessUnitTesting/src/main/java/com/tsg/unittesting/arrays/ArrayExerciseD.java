@@ -22,6 +22,7 @@ public class ArrayExerciseD {
      * @return
      */
     public static int pointFree(double[] numbers) {
+        //FIXME not working
         int maxNum = 0;
         final String DELIMITER = ".";
 
@@ -29,22 +30,31 @@ public class ArrayExerciseD {
             String[] numStrings = new String[numbers.length];
             String[] numStringsInt = new String[numbers.length];
 
-            //cast as String
+            //elements to String
             for (int i = 0; i < numbers.length; i++) {
                 numStrings[i] = Double.toString(numbers[i]);
             }
 
             //split along decimal and rejoin
             for (int i = 0; i < numStrings.length; i++) {
-                String[] tokens = numStrings[i].split(DELIMITER);
-                numStringsInt[i] = tokens[0].concat(tokens[1]);
+                if (numStrings[i].contains(DELIMITER)) {
+                    String[] tokens = numStrings[i].split(DELIMITER);
+                    
+                    if (tokens[0].isBlank()) {
+                        numStringsInt[i] = tokens[1];
+                    } else {
+                        numStringsInt[i] = tokens[0].concat(tokens[1]);
+                    }
+                } else {
+                    numStringsInt[i] = numStrings[i];
+                }
             }
 
-            //cast to int
+            //parse to int
             int[] newNum = new int[numbers.length];
             for (int i = 0; i < numStringsInt.length; i++) {
                 newNum[i] = Integer.parseInt(numStringsInt[i]);
-                
+
                 //track biggest number
                 if (newNum[i] > maxNum) {
                     maxNum = newNum[i];
