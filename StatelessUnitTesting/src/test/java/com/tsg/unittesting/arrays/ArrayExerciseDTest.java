@@ -76,4 +76,28 @@ public class ArrayExerciseDTest {
 
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testPoint2double1int() {
+        System.out.println("pointFree");
+        double[] numbers = {1.12,60,.22};;
+        int expResult = 112;
+
+        int result = ArrayExerciseD.pointFree(numbers);
+
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testPoint2int() {
+        System.out.println("pointFree");
+        double[] numbers = {20.0,2.0};
+        int expResult = 20;
+
+        int result = ArrayExerciseD.pointFree(numbers);
+
+        assertEquals(expResult, result);
+    }
+    
+    
 }

@@ -29,18 +29,22 @@ public class ArrayExerciseD {
             maxNum = (int) numbers[0];
 
             String[] numStrings = new String[numbers.length];
-            String[] numStringsInt = new String[numbers.length];
+
             //elements to String
             for (int i = 0; i < numbers.length; i++) {
                 numStrings[i] = Double.toString(numbers[i]);
             }
+
             //split along decimal and rejoin
+            String[] numStringsInt = new String[numbers.length];
             for (int i = 0; i < numStrings.length; i++) {
                 if (numStrings[i].contains(DELIMITER)) {
                     String t = numStrings[i];
                     String[] tokens = t.split("\\.");
                     if (tokens[0].isBlank()) {
                         numStringsInt[i] = tokens[1];
+                    } else if (tokens[1].equals("0")) {
+                        numStringsInt[i] = tokens[0];
                     } else {
                         numStringsInt[i] = tokens[0].concat(tokens[1]);
                     }
@@ -48,6 +52,7 @@ public class ArrayExerciseD {
                     numStringsInt[i] = numStrings[i];
                 }
             }
+
             //parse to int
             int[] newNum = new int[numbers.length];
             for (int i = 0; i < numStringsInt.length; i++) {
