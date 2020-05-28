@@ -24,6 +24,14 @@ public class StringsExerciseD {
      * @return String backwards
      */
     public static String simpleReverse(String phrase){
-        throw new UnsupportedOperationException("Code not yet written...!");
+        String reversePhrase="";
+        
+        if (!phrase.isBlank()) {
+            for (int i = 0; i < phrase.length(); i++) {
+                reversePhrase+=phrase.charAt((phrase.length()-1)-i);
+            }
+        }
+        
+        return reversePhrase;
     }
 }

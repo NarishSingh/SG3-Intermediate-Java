@@ -34,7 +34,7 @@ public class ArrayExerciseD {
             for (int i = 0; i < numbers.length; i++) {
                 numStrings[i] = Double.toString(numbers[i]);
             }
-
+            
             //split along decimal and rejoin
             String[] numStringsInt = new String[numbers.length];
             for (int i = 0; i < numStrings.length; i++) {
@@ -52,6 +52,13 @@ public class ArrayExerciseD {
                     numStringsInt[i] = numStrings[i];
                 }
             }
+
+            /*
+            String[] numStringsInt = new String[numbers.length];
+            for (int i = 0; i < numbers.length; i++) {
+                numStringsInt[i] = Double.toString(numbers[i]).replace(".", "");
+            }
+            */
 
             //parse to int
             int[] newNum = new int[numbers.length];

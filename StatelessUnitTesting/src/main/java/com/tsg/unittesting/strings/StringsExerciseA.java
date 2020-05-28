@@ -23,6 +23,6 @@ public class StringsExerciseA {
      * @return String yell
      */
     public static String yell(String word){
-        throw new UnsupportedOperationException("Code not yet written...!");
+        return word.toUpperCase();
     }
 }
