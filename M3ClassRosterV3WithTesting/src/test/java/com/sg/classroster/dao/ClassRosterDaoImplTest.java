@@ -11,12 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author naris
  */
-public class ClassRosterDaoImplTest extends ClassRosterDaoImpl {
+public class ClassRosterDaoImplTest {
 
     ClassRosterDao testDAO;
 
-    public ClassRosterDaoImplTest(String testFile){
-        super(testFile);
+    public ClassRosterDaoImplTest(){
     }
 
     @BeforeEach
