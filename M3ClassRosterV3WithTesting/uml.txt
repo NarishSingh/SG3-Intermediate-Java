@@ -1,0 +1,62 @@
+@startuml
+
+title Class Roster MVC II
+
+
+package controller {
+  class Worker1
+}
+
+package dao {
+  class ClassRosterDao{
+    +getStudent(): Student {studentID: String}
+    
+  }
+}
+
+package dto {
+  class Worker3
+}
+
+package service {
+  +interface ClassRosterServiceLayer{
+    +createStudent(): void {student: Student}
+    +getAllStudents(): List<Student>
+    +getStudent(): Student {studentID: String}
+    +removeStudent(): Student {studentID: String}
+  }
+  
+  ClassRosterServiceLayerImpl <|-down- ClassRosterServiceLayer: implements
+  
+  +class ClassRosterServiceLayerImpl{
+    -dao: ClassRosterDao
+    -auditDAO: ClassRosterAuditDAO
+    
+    +createStudent(): void {student: Student}
+    +getAllStudents(): List<Student>
+    +getStudent(): Student {studentID: String}
+    +removeStudent(): Student {studentID: String}
+    
+    -validateStudentData(): void {student: Student}
+  }
+  
+  +class ClassRosterDuplicateIDException <<Exception>>{
+    +ClassRosterDuplicateIDException(): {message: String}
+    +ClassRosterDuplicateIDException(): {message: String, cause: Throwable}
+  }
+  
+  +class ClassRosterDataValidationException <<Exception>>{
+    +ClassRosterDataValidationException(): {message: String}
+    +ClassRosterDataValidationException(): {message: String, cause: Throwable}
+  }
+  
+  ClassRosterServiceLayerImpl <-down- ClassRosterDuplicateIDException: throws
+  ClassRosterServiceLayerImpl <-down- ClassRosterDataValidationException: throws
+}
+
+package ui {
+  class Worker5
+}
+
+
+@enduml
