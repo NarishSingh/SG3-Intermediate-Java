@@ -16,13 +16,13 @@ public class ClassRosterDaoImpl implements ClassRosterDao {
 
     /*CTORS*/
     public ClassRosterDaoImpl() {
-        ROSTER_FILE="roster.txt"; //PRODUCTION
+        ROSTER_FILE = "roster.txt"; //PRODUCTION
     }
 
     public ClassRosterDaoImpl(String rosterTextFile) {
         this.ROSTER_FILE = rosterTextFile; //TESTING, inject on construction
     }
-    
+
     /*INTERFACE IMPLEMENTATION*/
     @Override
     public Student addStudent(String studentID, Student student) throws ClassRosterPersistenceException {
