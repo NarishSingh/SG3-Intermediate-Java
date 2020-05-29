@@ -25,6 +25,12 @@ public class ClassRosterDaoImplTest {
         testDAO = new ClassRosterDaoImplTest(testFile); //FIXME ctor doesn't take any arg's
     }
 
+    /**
+     * Test of addStudent() of DAO and getter methods of DTO - add a student and
+     * check if obj is created correctly
+     *
+     * @throws Exception
+     */
     @Test
     public void testAddGetStudent() throws Exception {
         //Arrange
@@ -45,6 +51,12 @@ public class ClassRosterDaoImplTest {
         assertEquals(student.getCohort(), retrievedStudent.getCohort());
     }
 
+    /**
+     * Test of getAllStudents() of DAO, using addStudent() and setters of DTO -
+     * add 2 students then get List of all students
+     *
+     * @throws Exception
+     */
     @Test
     public void testAddGetAllStudents() throws Exception {
         //ARRANGE
@@ -76,6 +88,13 @@ public class ClassRosterDaoImplTest {
         assertTrue(testDAO.getAllStudents().contains(secondStudent), "List should include Charles");
     }
 
+    /**
+     * Test of removeStudent() of DAO, using setters, addStudent(), and
+     * getAllStudents() - Add 2 students, remove one and check list, remove the
+     * 2nd and check list again, check if list is empty at end
+     *
+     * @throws Exception
+     */
     @Test
     public void testRemoveStudent() throws Exception {
         //ARRANGE
