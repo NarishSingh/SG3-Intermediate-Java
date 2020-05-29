@@ -22,7 +22,7 @@ public class ClassRosterDaoImplTest {
     public void setUp() throws Exception {
         String testFile = "testroster.txt";
         new FileWriter(testFile); //create file or scrub of any data
-        testDAO = new ClassRosterDaoImplTest(testFile); //FIXME ctor doesn't take any arg's
+        testDAO = new ClassRosterDaoImpl(testFile); //FIXME ctor doesn't take any arg's
     }
 
     /**
