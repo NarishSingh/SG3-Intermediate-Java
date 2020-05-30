@@ -96,7 +96,8 @@ public class DVDLibraryDAOImplTest {
 
     /**
      * Test removeDVD() of DAO - add 2 DVD's, remove one and check list, remove
-     * other and check list, check if list is null
+     * other and check if list is empty, attempt to get the removed DVD's from
+     * list to be sure
      *
      * @throws Exception
      */
@@ -111,7 +112,7 @@ public class DVDLibraryDAOImplTest {
         dvd.setMpaaRating("0/5");
         dvd.setUserRating("0/10 what is this");
 
-        String movieTitle2 = "testing, the movie part II";
+        String movieTitle2 = "we are no longer testing";
         DVD dvd2 = new DVD(movieTitle2);
         dvd2.setReleaseDate("5-30-20");
         dvd2.setDirector("Not Narish");
@@ -123,17 +124,18 @@ public class DVDLibraryDAOImplTest {
         testDAO.addDVD(movieTitle, dvd);
         testDAO.addDVD(movieTitle2, dvd2);
 
-        List<DVD> allDVDs = testDAO.getLibrary();
 
         //remove 1st
         DVD removedDVD = testDAO.removeDVD(dvd.getTitle());
         assertEquals(removedDVD, dvd, "testing should've been removed");
+        List<DVD> allDVDs = testDAO.getLibrary();
         assertNotNull(allDVDs, "List shouldn't be null");
         assertTrue(testDAO.getLibrary().contains(dvd2), "List should include testing II");
 
         //remove 2nd
         removedDVD = testDAO.removeDVD(dvd2.getTitle());
-        assertEquals(removedDVD, dvd2, "testing II should've been removed");
+        assertEquals(removedDVD, dvd2, "we are no longer testing should've been removed");
+        allDVDs = testDAO.getLibrary();
         assertTrue(allDVDs.isEmpty(), "List should be empty");
 
         //verify
