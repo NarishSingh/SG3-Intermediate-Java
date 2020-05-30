@@ -11,19 +11,18 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author naris
  */
-public class DVDLibraryDAOImplTest extends DVDLibraryDAOImpl {
+public class DVDLibraryDAOImplTest {
 
     DVDLibraryDAO testDAO;
 
-    public DVDLibraryDAOImplTest(String testFile) {
-        super(testFile);
+    public DVDLibraryDAOImplTest() {
     }
 
     @BeforeEach
     public void setUp() throws Exception {
         String testFile = "testlibrary.txt";
         new FileWriter(testFile);
-        testDAO = new DVDLibraryDAOImplTest(testFile); //FIXME same problem with the ctor
+        testDAO = new DVDLibraryDAOImpl(testFile);
     }
 
     /**
@@ -33,14 +32,14 @@ public class DVDLibraryDAOImplTest extends DVDLibraryDAOImpl {
      * @throws Exception
      */
     @Test
-    public void testAddGETDVD() throws Exception {
+    public void testAddGetDVD() throws Exception {
         //Arrange
         String movieTitle = "testing, the movie";
         DVD dvd = new DVD(movieTitle);
         dvd.setReleaseDate("5-29-20");
         dvd.setDirector("Narish");
         dvd.setStudio("Singh Studios");
-        dvd.setUserRating("0/10");
+        dvd.setMpaaRating("0/5");
         dvd.setUserRating("0/10 what is this");
 
         //Act
@@ -70,15 +69,15 @@ public class DVDLibraryDAOImplTest extends DVDLibraryDAOImpl {
         dvd.setReleaseDate("5-29-20");
         dvd.setDirector("Narish");
         dvd.setStudio("Singh Studios");
-        dvd.setUserRating("0/10");
+        dvd.setMpaaRating("0/5");
         dvd.setUserRating("0/10 what is this");
 
         String movieTitle2 = "testing, the movie part II";
-        DVD dvd2 = new DVD(movieTitle);
+        DVD dvd2 = new DVD(movieTitle2);
         dvd2.setReleaseDate("5-30-20");
         dvd2.setDirector("Not Narish");
         dvd2.setStudio("Singh & Singh Studios");
-        dvd2.setUserRating("1/10");
+        dvd2.setMpaaRating("2/5");
         dvd2.setUserRating("1/10 cool");
 
         //Act
@@ -109,15 +108,15 @@ public class DVDLibraryDAOImplTest extends DVDLibraryDAOImpl {
         dvd.setReleaseDate("5-29-20");
         dvd.setDirector("Narish");
         dvd.setStudio("Singh Studios");
-        dvd.setUserRating("0/10");
+        dvd.setMpaaRating("0/5");
         dvd.setUserRating("0/10 what is this");
 
         String movieTitle2 = "testing, the movie part II";
-        DVD dvd2 = new DVD(movieTitle);
+        DVD dvd2 = new DVD(movieTitle2);
         dvd2.setReleaseDate("5-30-20");
         dvd2.setDirector("Not Narish");
         dvd2.setStudio("Singh & Singh Studios");
-        dvd2.setUserRating("1/10");
+        dvd2.setMpaaRating("0/5");
         dvd2.setUserRating("1/10 cool");
 
         //Act & Assert
