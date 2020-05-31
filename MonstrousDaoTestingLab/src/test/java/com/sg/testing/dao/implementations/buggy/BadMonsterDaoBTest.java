@@ -1,0 +1,132 @@
+/*
+Add and get all will pass, the methods are decent
+the rest have flaws which will be exploited to yield fail tests
+*/
+package com.sg.testing.dao.implementations.buggy;
+
+import com.sg.testing.dao.MonsterDao;
+import com.sg.testing.model.Monster;
+import com.sg.testing.model.MonsterType;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ *
+ * @author naris
+ */
+public class BadMonsterDaoBTest {
+
+    MonsterDao badTestDAO;
+
+    public BadMonsterDaoBTest() {
+    }
+
+    @BeforeEach
+    public void setUp() {
+        badTestDAO = new BadMonsterDaoB();
+    }
+
+    @Test
+    public void testAddGetMonster() {
+        //ARRANGE
+        final int monster1ID = 0001;
+        Monster testMonster1 = new Monster("Carmilla", MonsterType.VAMPIRE, 69, "Black Pudding");
+
+        //ACT
+        badTestDAO.addMonster(monster1ID, testMonster1);
+        Monster addedMonster = badTestDAO.getMonster(monster1ID);
+
+        //ASSERT
+        assertEquals(badTestDAO.getMonster(monster1ID), addedMonster, "Carmilla should be the added monster");
+    }
+
+    @Test
+    public void testGetAllMonsters() {
+        //ARRANGE
+        final int monster1ID = 0001;
+        Monster testMonster1 = new Monster("Carmilla", MonsterType.VAMPIRE, 69, "Black Pudding");
+        final int monster2ID = 0002;
+        Monster testMonster2 = new Monster("Elizabeth", MonsterType.LIZARDMAN, 35, "BBQ Squirrel");
+
+        //ACT
+        badTestDAO.addMonster(monster1ID, testMonster1);
+        Monster addedMonster1 = badTestDAO.getMonster(monster1ID);
+        badTestDAO.addMonster(monster2ID, testMonster2);
+        Monster addedMonster2 = badTestDAO.getMonster(monster2ID);
+
+        List<Monster> monsterRoster = badTestDAO.getAllMonsters();
+
+        //ASSERT
+        assertEquals(badTestDAO.getMonster(monster1ID), addedMonster1, "Carmilla should be the first added monster");
+        assertEquals(badTestDAO.getMonster(monster2ID), addedMonster2, "Elizabeth should be the second added monster");
+
+        assertFalse(monsterRoster.isEmpty(), "Monster Roster shouldn't be empty");
+        assertEquals(2, monsterRoster.size(), "Monster Roster should have exactly 2 monsters");
+        assertTrue(monsterRoster.contains(testMonster1), "Roster should contain Carmilla");
+        assertTrue(monsterRoster.contains(testMonster2), "Roster should contain Elizabeth");
+    }
+
+    @Test
+    public void testUpdateMonster() {
+        //ARRANGE
+        //feeding bad ID to show method will do nothing
+        final int monsterID = 0001;
+        final int monsterUpdateID = 0002;
+        Monster testMonster1 = new Monster("Carmilla", MonsterType.VAMPIRE, 69, "Black Pudding");
+        Monster testMonster2 = new Monster("Elizabeth", MonsterType.LIZARDMAN, 35, "BBQ Squirrel");
+
+        //ACT
+        badTestDAO.addMonster(monsterID, testMonster1);
+        Monster originalMonster0001 = badTestDAO.getMonster(monsterID);
+
+        badTestDAO.updateMonster(monsterUpdateID, testMonster2);
+        Monster newMonster0001 = badTestDAO.getMonster(monsterUpdateID);
+
+        List<Monster> monsterRoster = badTestDAO.getAllMonsters();
+
+        //ASSERT
+        assertFalse(monsterRoster.contains(originalMonster0001), "Carmilla should no longer be in roster");
+        assertTrue(monsterRoster.contains(newMonster0001), "Elizabeth should be in Roster");
+        assertEquals(badTestDAO.getMonster(monsterUpdateID), newMonster0001, "Elizabeth should be the monster at test ID");
+        assertNotEquals(badTestDAO.getMonster(monsterUpdateID), originalMonster0001, "Carmilla shouldn't be at test ID");
+    }
+
+    @Test
+    public void testRemoveMonster() {
+        //ARRANGE
+        final int monster1ID = 0001;
+        Monster testMonster1 = new Monster("Carmilla", MonsterType.VAMPIRE, 69, "Black Pudding");
+        final int monster2ID = 0002;
+        Monster testMonster2 = new Monster("Elizabeth", MonsterType.LIZARDMAN, 35, "BBQ Squirrel");
+
+        //ACT/ASSERT
+        badTestDAO.addMonster(monster1ID, testMonster1);
+        Monster addedMonster1 = badTestDAO.getMonster(monster1ID);
+        badTestDAO.addMonster(monster2ID, testMonster2);
+        Monster addedMonster2 = badTestDAO.getMonster(monster2ID);
+
+        //full roster
+        List<Monster> monsterRoster = badTestDAO.getAllMonsters();
+        assertFalse(monsterRoster.isEmpty(), "Monster Roster shouldn't be empty");
+        assertEquals(2, monsterRoster.size(), "Monster Roster should have exactly 2 monsters");
+        assertTrue(monsterRoster.contains(addedMonster1), "Roster should contain Carmilla");
+        assertTrue(monsterRoster.contains(addedMonster2), "Roster should contain Elizabeth");
+
+        //remove 1st test monster
+        badTestDAO.removeMonster(monster1ID);
+        monsterRoster = badTestDAO.getAllMonsters();
+        assertFalse(monsterRoster.contains(addedMonster1), "Carmilla shouldn't be in roster anymore");
+        assertTrue(monsterRoster.contains(addedMonster2), "Roster should contain Elizabeth");
+        assertFalse(monsterRoster.isEmpty(), "Monster Roster shouldn't be empty");
+        assertEquals(1, monsterRoster.size(), "Monster Roster should have exactly 1 monsters after removal");
+
+        //remove last test
+        badTestDAO.removeMonster(monster2ID);
+        monsterRoster = badTestDAO.getAllMonsters();
+        assertTrue(monsterRoster.isEmpty(), "Monster Roster should be empty after second removal");
+        assertFalse(monsterRoster.contains(addedMonster1), "Carmilla shouldn't be in roster anymore");
+        assertFalse(monsterRoster.contains(addedMonster2), "Elizabeth shouldn't be in roster anymore");
+    }
+}
