@@ -1,6 +1,5 @@
 /*
-add and get methods will pass, as these methods will work despite unnecessary logic
-All else will fail due to critical flaw in getAllMonsters(), not properly saving to HashMap
+These tests have some unnecessary logic but all will pass
  */
 package com.sg.testing.dao.implementations.buggy;
 
@@ -16,16 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author naris
  */
-public class BadMonsterDaoCTest {
+public class BadMonsterDaoDTest {
 
     MonsterDao badTestDAO;
 
-    public BadMonsterDaoCTest() {
+    public BadMonsterDaoDTest() {
     }
 
     @BeforeEach
     public void setUp() {
-        badTestDAO = new BadMonsterDaoC();
+        badTestDAO = new BadMonsterDaoD();
     }
 
     @Test
@@ -44,8 +43,6 @@ public class BadMonsterDaoCTest {
 
     @Test
     public void testGetAllMonsters() {
-        //will fail because is atttempting to return a ArrayList of obj, instead of List of values, monsterRoster can't save data
-        
         //ARRANGE
         final int monster1ID = 0001;
         Monster testMonster1 = new Monster("Carmilla", MonsterType.VAMPIRE, 69, "Black Pudding");

@@ -1,7 +1,7 @@
-/*********************************
-* The Software Guild
-* Copyright (C) 2020 Wiley edu LLC - All Rights Reserved
-*********************************/
+/** *******************************
+ * The Software Guild
+ * Copyright (C) 2020 Wiley edu LLC - All Rights Reserved
+ ******************************** */
 package com.sg.testing.dao.implementations.buggy;
 
 import com.sg.testing.dao.MonsterDao;
@@ -17,7 +17,7 @@ public class BadMonsterDaoF implements MonsterDao {
 
     @Override
     public Monster addMonster(int id, Monster m) {
-        Monster otherM = monsters.get(id);
+        Monster otherM = monsters.get(id); //unnecessary
         monsters.put(id, m);
         return otherM;
     }
@@ -25,10 +25,10 @@ public class BadMonsterDaoF implements MonsterDao {
     @Override
     public Monster getMonster(int id) {
         Monster storedMonster = null;
-        
+
         if (monsters.containsKey(id)) {
             storedMonster = monsters.put(id, storedMonster);
-        }
+        } //inefficient, .containsKey() protects it from overwriting but put means it will continue re-add it
 
         return storedMonster;
     }
@@ -38,7 +38,7 @@ public class BadMonsterDaoF implements MonsterDao {
         List<Monster> monsterList = new ArrayList<>(monsters.values());
         for (int id : monsters.keySet()) {
             monsterList.add(monsters.get(id));
-        }
+        } //This is going to re-add the entire list a second time
         return monsterList;
     }
 
@@ -47,13 +47,13 @@ public class BadMonsterDaoF implements MonsterDao {
         Monster monster = monsters.get(id);
         if (monster != null) {
             monsters.put(id, m);
-        }
+        } //unnecessary, can use .replace()
     }
 
     @Override
     public Monster removeMonster(int id) {
         Monster removedMonster = monsters.remove(id);
-        return removedMonster;
+        return removedMonster; //.remove() handles this return
     }
 
 }

@@ -22,7 +22,7 @@ public class BadMonsterDaoE implements MonsterDao {
 
     @Override
     public Monster getMonster(int id) {
-       return monsters.remove(id);
+       return monsters.remove(id); //this will return the intended monster, but will also remove it from hashmap
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BadMonsterDaoE implements MonsterDao {
     public Monster removeMonster(int id) {
         Monster toRemove = monsters.get(id);
         monsters.remove(id);
-        return toRemove;
+        return toRemove; //unnecessary as .remove() will handle this return
     }
     
 }
