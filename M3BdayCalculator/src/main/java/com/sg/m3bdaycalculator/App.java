@@ -31,18 +31,19 @@ public class App {
         //bday this year
         int bdayMonth = bday.get(ChronoField.MONTH_OF_YEAR);
         int bdayDay = bday.getDayOfMonth();
-        int thisYear = ld.getYear();
+        final int thisYear = ld.getYear();
         LocalDate bdayThisYear = LocalDate.of(thisYear, bdayMonth, bdayDay);
 
         //bday next year
-        LocalDate bdayNextYear = LocalDate.of(thisYear++, bdayMonth, bdayDay);
+        final int nextYear = thisYear + 1;
+        LocalDate bdayNextYear = LocalDate.of(nextYear, bdayMonth, bdayDay);
         Period daysUntilNextBday = ld.until(bdayNextYear); //will be in years months and days
-        
 
         System.out.println("You are " + age.getYears() + " years old!!");
         System.out.println("Your birthday fell on a " + bday.getDayOfWeek());
         System.out.println("This year, your birthday falls on a " + bdayThisYear.getDayOfWeek());
-//        System.out.println("There are " +  + " days until your birthday next year!");
+        System.out.println("There are " + daysUntilNextBday + " days until your birthday next year!");
+        System.out.println("You will be " + (age.getYears() + 1) + " years old!!");
     }
 
 }
