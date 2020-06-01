@@ -13,6 +13,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 
 public class App {
 
@@ -37,12 +38,12 @@ public class App {
         //bday next year
         final int nextYear = thisYear + 1;
         LocalDate bdayNextYear = LocalDate.of(nextYear, bdayMonth, bdayDay);
-        Period daysUntilNextBday = ld.until(bdayNextYear); //will be in years months and days
+        long daysUntilNextBday = ChronoUnit.DAYS.between(ld, bdayNextYear);
 
         System.out.println("You are " + age.getYears() + " years old!!");
         System.out.println("Your birthday fell on a " + bday.getDayOfWeek());
         System.out.println("This year, your birthday falls on a " + bdayThisYear.getDayOfWeek());
-        System.out.println("There are " + daysUntilNextBday + " days until your birthday next year!");
+        System.out.println("There are " + daysUntilNextBday + " days until your birthday next year!"); //need to extract days from this
         System.out.println("You will be " + (age.getYears() + 1) + " years old!!");
     }
 
