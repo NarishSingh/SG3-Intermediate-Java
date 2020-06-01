@@ -1,6 +1,6 @@
-package com.sg.m2dvdlibrary.ui;
+package com.sg.m3dvdv2.ui;
 
-import com.sg.m2dvdlibrary.dto.DVD;
+import com.sg.m3dvdv2.dto.DVD;
 import java.util.List;
 
 public class DVDLibraryView {

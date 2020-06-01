@@ -1,7 +1,7 @@
 /*
 exception definition class
  */
-package com.sg.m2dvdlibrary.dao;
+package com.sg.m3dvdv2.dao;
 
 public class DVDLibraryDAOException extends Exception {
     public DVDLibraryDAOException(String message){

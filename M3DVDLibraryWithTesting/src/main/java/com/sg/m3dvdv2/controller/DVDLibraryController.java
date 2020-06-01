@@ -1,9 +1,9 @@
-package com.sg.m2dvdlibrary.controller;
+package com.sg.m3dvdv2.controller;
 
-import com.sg.m2dvdlibrary.dao.DVDLibraryDAO;
-import com.sg.m2dvdlibrary.dao.DVDLibraryDAOException;
-import com.sg.m2dvdlibrary.dto.DVD;
-import com.sg.m2dvdlibrary.ui.DVDLibraryView;
+import com.sg.m3dvdv2.dao.DVDLibraryDAO;
+import com.sg.m3dvdv2.dao.DVDLibraryDAOException;
+import com.sg.m3dvdv2.dto.DVD;
+import com.sg.m3dvdv2.ui.DVDLibraryView;
 import java.util.List;
 
 public class DVDLibraryController {

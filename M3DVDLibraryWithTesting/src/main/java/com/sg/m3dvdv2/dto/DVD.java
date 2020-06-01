@@ -1,7 +1,7 @@
 /*
 now with methods for testing
  */
-package com.sg.m2dvdlibrary.dto;
+package com.sg.m3dvdv2.dto;
 
 import java.util.Objects;
 
