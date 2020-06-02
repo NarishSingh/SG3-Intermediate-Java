@@ -26,14 +26,14 @@ import java.util.List;
 
 public class CarLotServiceImpl implements CarLotService {
 
-    CarLotDAO dao;
+    private CarLotDAO dao;
 
-    public CarLotServiceImpl() {
-        this.dao = new CarLotDAOImpl();
+    public CarLotServiceImpl(CarLotDAO dao) {
+        this.dao = dao;
     }
 
     @Override
-    public Car getACar(String VIN) {
+    public Car getACar(String VIN) throws NoSuchCarException {
         return dao.getCar(VIN);
     }
 

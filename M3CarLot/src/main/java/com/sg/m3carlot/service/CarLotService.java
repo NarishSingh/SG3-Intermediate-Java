@@ -19,8 +19,9 @@ public interface CarLotService {
      *
      * @param VIN {String} the car obj's unique ID
      * @return {Car} car obj associated with that VIN key
+     * @throws NoSuchCarException if car obj doesn't exist in lot HashMap
      */
-    public Car getACar(String VIN);
+    public Car getACar(String VIN) throws NoSuchCarException;
 
     /**
      * Get a list of all cars in lot
@@ -58,7 +59,8 @@ public interface CarLotService {
     public List<Car> getCarByMakeAndModel(String make, String model);
 
     /**
-     * Apply a discount to a car, updating its price field and return final sell price
+     * Apply a discount to a car, updating its price field and return final sell
+     * price
      *
      * @param VIN             {String} the unique ID for a car obj
      * @param percentDiscount {BigDecimal} the percentage of the discount being
