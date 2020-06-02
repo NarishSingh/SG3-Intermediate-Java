@@ -2,6 +2,8 @@ package com.sg.M3DVDLocalDate.dao;
 
 import com.sg.M3DVDLocalDate.dto.DVD;
 import java.io.FileWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,8 @@ public class DVDLibraryDAOImplTest {
         //Arrange
         String movieTitle = "testing, the movie";
         DVD dvd = new DVD(movieTitle);
-        dvd.setReleaseDate("5-29-20");
+        LocalDate releaseDate = LocalDate.parse("05-29-2020", DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        dvd.setReleaseDate(releaseDate);
         dvd.setDirector("Narish");
         dvd.setStudio("Singh Studios");
         dvd.setMpaaRating("0/5");
@@ -66,7 +69,8 @@ public class DVDLibraryDAOImplTest {
         //Arrange
         String movieTitle = "testing, the movie";
         DVD dvd = new DVD(movieTitle);
-        dvd.setReleaseDate("5-29-20");
+        LocalDate releaseDate = LocalDate.parse("05-29-2020", DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        dvd.setReleaseDate(releaseDate);
         dvd.setDirector("Narish");
         dvd.setStudio("Singh Studios");
         dvd.setMpaaRating("0/5");
@@ -74,7 +78,8 @@ public class DVDLibraryDAOImplTest {
 
         String movieTitle2 = "testing, the movie part II";
         DVD dvd2 = new DVD(movieTitle2);
-        dvd2.setReleaseDate("5-30-20");
+        LocalDate releaseDate2 = LocalDate.parse("05-30-2020", DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        dvd2.setReleaseDate(releaseDate2);
         dvd2.setDirector("Not Narish");
         dvd2.setStudio("Singh & Singh Studios");
         dvd2.setMpaaRating("2/5");
@@ -106,7 +111,8 @@ public class DVDLibraryDAOImplTest {
         //Arrange
         String movieTitle = "testing, the movie";
         DVD dvd = new DVD(movieTitle);
-        dvd.setReleaseDate("5-29-20");
+        LocalDate releaseDate = LocalDate.parse("05-29-2020", DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        dvd.setReleaseDate(releaseDate);
         dvd.setDirector("Narish");
         dvd.setStudio("Singh Studios");
         dvd.setMpaaRating("0/5");
@@ -114,7 +120,8 @@ public class DVDLibraryDAOImplTest {
 
         String movieTitle2 = "we are no longer testing";
         DVD dvd2 = new DVD(movieTitle2);
-        dvd2.setReleaseDate("5-30-20");
+        LocalDate releaseDate2 = LocalDate.parse("05-30-2020", DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        dvd2.setReleaseDate(releaseDate2);
         dvd2.setDirector("Not Narish");
         dvd2.setStudio("Singh & Singh Studios");
         dvd2.setMpaaRating("0/5");
@@ -123,7 +130,6 @@ public class DVDLibraryDAOImplTest {
         //Act & Assert
         testDAO.addDVD(movieTitle, dvd);
         testDAO.addDVD(movieTitle2, dvd2);
-
 
         //remove 1st
         DVD removedDVD = testDAO.removeDVD(dvd.getTitle());
