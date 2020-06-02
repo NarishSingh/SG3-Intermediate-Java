@@ -15,6 +15,12 @@ public class Car {
     private BigDecimal price;
     private long odometerMiles;
     private CarKey key;
+    
+    /*ctor*/
+    public Car(String VIN, CarKey key) {
+        this.VIN = VIN;
+        this.key = key;
+    }
 
     /*getter/setters*/
     public String getVIN() {

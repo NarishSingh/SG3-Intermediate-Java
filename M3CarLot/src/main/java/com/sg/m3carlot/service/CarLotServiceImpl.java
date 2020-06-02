@@ -16,6 +16,8 @@ If they gave too little money, it should throw an UnderpaidPriceException
 */
 package com.sg.m3carlot.service;
 
+import com.sg.m3carlot.dao.CarLotDAO;
+import com.sg.m3carlot.dao.CarLotDAOImpl;
 import com.sg.m3carlot.dto.Car;
 import com.sg.m3carlot.dto.CarKey;
 import java.math.BigDecimal;
@@ -24,6 +26,12 @@ import java.util.List;
 
 public class CarLotServiceImpl implements CarLotService {
 
+    CarLotDAO dao;    
+
+    public CarLotServiceImpl() {
+        this.dao=new CarLotDAOImpl();
+    }
+    
     @Override
     public Car getACar(String VIN) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

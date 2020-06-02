@@ -9,6 +9,11 @@ public class CarKey {
     private String VIN;
     private boolean laserCut;
 
+    /*ctor*/
+    public CarKey(String VIN) {
+        this.VIN = VIN;
+    }
+    
     /*getter/setters*/
     public String getVIN() {
         return VIN;

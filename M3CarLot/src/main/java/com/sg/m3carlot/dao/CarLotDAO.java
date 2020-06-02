@@ -3,10 +3,6 @@ package com.sg.m3carlot.dao;
 import com.sg.m3carlot.dto.Car;
 import java.util.List;
 
-/**
- *
- * @author naris
- */
 public interface CarLotDAO {
 
     /**
