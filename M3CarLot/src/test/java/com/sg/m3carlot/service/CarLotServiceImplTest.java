@@ -34,7 +34,7 @@ public class CarLotServiceImplTest {
         test1.setMake("Porsche");
         test1.setModel("911 Turbo S");
         test1.setColor("Gray");
-        BigDecimal testPrice = new BigDecimal("1618000.00");
+        BigDecimal testPrice = new BigDecimal("161800.00");
         testPrice.setScale(2, RoundingMode.HALF_UP);
         test1.setPrice(testPrice);
         test1.setOdometerMiles(125);
@@ -277,7 +277,7 @@ public class CarLotServiceImplTest {
         final String MODEL_P = "911 Turbo S";
         final String MAKE_MM = "Mercedes Benz-AMG";
         final String MODEL_MM = "GT-R Coupe";
-        
+
         String testVIN = "001";
         CarKey key1 = new CarKey(testVIN);
         key1.setLaserCut(true);
@@ -334,28 +334,48 @@ public class CarLotServiceImplTest {
         Car grayGTR = testDAO.addCar(testVIN2, test2);
         Car black911 = testDAO.addCar(testVIN3, test3);
         Car blackGTR = testDAO.addCar(testVIN4, test4);
-        
+
         //service
-        List<Car> porscheCars=testService.getCarByMakeAndModel(MAKE_P, MODEL_P);
-        List<Car> benzAMGCars=testService.getCarByMakeAndModel(MAKE_MM, MODEL_MM);
-        
+        List<Car> porscheCars = testService.getCarByMakeAndModel(MAKE_P, MODEL_P);
+        List<Car> benzAMGCars = testService.getCarByMakeAndModel(MAKE_MM, MODEL_MM);
+
         assertNotNull(porscheCars, "Porsche list shouldn't be empty");
         assertEquals(2, porscheCars.size(), "Porsche list should have 2 cars");
         assertTrue(porscheCars.contains(gray911), "Porsche list should have a gray 911");
         assertTrue(porscheCars.contains(black911), "Porsche list should have a black 911");
-        
+
         assertNotNull(benzAMGCars, "Mercedes Benz list shouldn't be empty");
         assertEquals(2, benzAMGCars.size(), "Mercedes Benz list should have 2 cars");
         assertTrue(benzAMGCars.contains(grayGTR), "Mercedes Benz list should have a gray GT-R");
         assertTrue(benzAMGCars.contains(blackGTR), "Mercedes Benz list should have a black GT-R");
     }
 
-    /*
     @Test
-    public void testDiscountCar() {
+    public void testDiscountCar() throws NoSuchCarException {
+        final BigDecimal TEST_DISCOUNT = new BigDecimal("7.5");
 
+        String testVIN = "001";
+        CarKey key1 = new CarKey(testVIN);
+        key1.setLaserCut(true);
+
+        Car test1 = new Car(testVIN, key1);
+        test1.setMake("Porsche");
+        test1.setModel("911 Turbo S");
+        test1.setColor("Gray");
+        BigDecimal testPrice = new BigDecimal("161800.00");
+        testPrice.setScale(2, RoundingMode.HALF_UP);
+        test1.setPrice(testPrice);
+        test1.setOdometerMiles(125);
+
+        Car addedCar = testDAO.addCar(testVIN, test1);
+        
+        BigDecimal discounted911 = testService.discountCar(testVIN, TEST_DISCOUNT);
+        int salePrice=discounted911.intValue(); //$149,665
+        
+        assertEquals(addedCar.getPrice(), salePrice, "The sale price of a $161,800.00 Porsche should be $149,665");
     }
 
+    /*
     @Test
     public void testSellCar() {
 
