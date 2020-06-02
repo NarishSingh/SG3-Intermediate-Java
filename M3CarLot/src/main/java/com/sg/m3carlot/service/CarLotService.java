@@ -58,7 +58,7 @@ public interface CarLotService {
     public List<Car> getCarByMakeAndModel(String make, String model);
 
     /**
-     * Apply a discount to a car
+     * Apply a discount to a car, updating its price field and return final sell price
      *
      * @param VIN             {String} the unique ID for a car obj
      * @param percentDiscount {BigDecimal} the percentage of the discount being
