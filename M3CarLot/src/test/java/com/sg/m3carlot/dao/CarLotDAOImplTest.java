@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CarLotDAOImplTest {
 
-    CarLotDAO testDAO;
+    private CarLotDAO testDAO;
 
     public CarLotDAOImplTest() {
 
