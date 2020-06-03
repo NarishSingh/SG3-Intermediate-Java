@@ -51,7 +51,7 @@ public class Interest {
      * @return {BigDecimal} interest earned per year
      */
     public BigDecimal calcYearlyIntr() {
-        BigDecimal annualRate = getAnnual().divide(PERCENT_DIV, 2);
+        BigDecimal annualRate = getAnnual().divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(annualRate);
     }
 
@@ -61,7 +61,7 @@ public class Interest {
      * @return {BigDecimal} interest earned every 3 months or 1 quarter
      */
     public BigDecimal calcQuarterlyIntr() {
-        BigDecimal quarterlyRate = (getAnnual().divide(QUARTERS, 2)).divide(PERCENT_DIV, 2);
+        BigDecimal quarterlyRate = (getAnnual().divide(QUARTERS, 2, RoundingMode.HALF_UP)).divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(quarterlyRate);
     }
 
@@ -71,7 +71,7 @@ public class Interest {
      * @return {BigDecimal} interest earned per month
      */
     public BigDecimal calcMonthlyIntr() {
-        BigDecimal monthlyRate = (getAnnual().divide(MONTHS, 2)).divide(PERCENT_DIV, 2);
+        BigDecimal monthlyRate = (getAnnual().divide(MONTHS, 2, RoundingMode.HALF_UP)).divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(monthlyRate);
     }
 
@@ -81,7 +81,7 @@ public class Interest {
      * @return {BigDecimal} interest earned daily
      */
     public BigDecimal calcDailyIntr() {
-        BigDecimal dailyRate = (getAnnual().divide(DAYS, 2)).divide(PERCENT_DIV, 2);
+        BigDecimal dailyRate = (getAnnual().divide(DAYS, 2, RoundingMode.HALF_UP)).divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(dailyRate);
     }
 
