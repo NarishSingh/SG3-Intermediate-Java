@@ -17,7 +17,6 @@ The above has several business based methods that must be defined!
 package com.sg.m3carlot.service;
 
 import com.sg.m3carlot.dao.CarLotDAO;
-import com.sg.m3carlot.dao.CarLotDAOImpl;
 import com.sg.m3carlot.dto.Car;
 import com.sg.m3carlot.dto.CarKey;
 import java.math.BigDecimal;
