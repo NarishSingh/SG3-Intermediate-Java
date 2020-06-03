@@ -7,23 +7,18 @@ public class Interest {
 
     /*fields*/
     private BigDecimal investment;
-    private BigDecimal annual;
+    private final BigDecimal annual;
     private final int term;
-    static private BigDecimal PERCENT_DIV;
-    static private BigDecimal QUARTERS;
-    static private BigDecimal MONTHS;
-    static private BigDecimal DAYS;
+    static final private BigDecimal PERCENT_DIV = new BigDecimal("100").setScale(2, RoundingMode.HALF_UP);
+    static final private BigDecimal QUARTERS = new BigDecimal("4").setScale(2, RoundingMode.HALF_UP);
+    static final private BigDecimal MONTHS = new BigDecimal("12").setScale(2, RoundingMode.HALF_UP);
+    static final private BigDecimal DAYS = new BigDecimal("365").setScale(2, RoundingMode.HALF_UP);
 
     /*ctor*/
     public Interest(BigDecimal investment, BigDecimal annual, int term) {
         this.investment = investment;
-        this.annual = annual;
+        this.annual = annual.divide(PERCENT_DIV, 2, RoundingMode.HALF_UP); //convert from % to decimal form
         this.term = term;
-
-        PERCENT_DIV = new BigDecimal("100");
-        QUARTERS = new BigDecimal("4");
-        MONTHS = new BigDecimal("12");
-        DAYS = new BigDecimal("365");
     }
 
     /*getter/setter*/
@@ -51,8 +46,7 @@ public class Interest {
      * @return {BigDecimal} interest earned per year
      */
     public BigDecimal calcYearlyIntr() {
-        BigDecimal annualRate = getAnnual().divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
-        return getInvestment().multiply(annualRate);
+        return getInvestment().multiply(getAnnual());
     }
 
     /**
@@ -61,7 +55,7 @@ public class Interest {
      * @return {BigDecimal} interest earned every 3 months or 1 quarter
      */
     public BigDecimal calcQuarterlyIntr() {
-        BigDecimal quarterlyRate = (getAnnual().divide(QUARTERS, 2, RoundingMode.HALF_UP)).divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
+        BigDecimal quarterlyRate = getAnnual().divide(QUARTERS, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(quarterlyRate);
     }
 
@@ -71,7 +65,7 @@ public class Interest {
      * @return {BigDecimal} interest earned per month
      */
     public BigDecimal calcMonthlyIntr() {
-        BigDecimal monthlyRate = (getAnnual().divide(MONTHS, 2, RoundingMode.HALF_UP)).divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
+        BigDecimal monthlyRate = getAnnual().divide(MONTHS, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(monthlyRate);
     }
 
@@ -81,7 +75,7 @@ public class Interest {
      * @return {BigDecimal} interest earned daily
      */
     public BigDecimal calcDailyIntr() {
-        BigDecimal dailyRate = (getAnnual().divide(DAYS, 2, RoundingMode.HALF_UP)).divide(PERCENT_DIV, 2, RoundingMode.HALF_UP);
+        BigDecimal dailyRate = getAnnual().divide(DAYS, 2, RoundingMode.HALF_UP);
         return getInvestment().multiply(dailyRate);
     }
 
