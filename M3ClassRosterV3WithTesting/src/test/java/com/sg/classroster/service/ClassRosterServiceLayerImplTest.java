@@ -86,51 +86,51 @@ public class ClassRosterServiceLayerImplTest {
             return; //what was expected
         }
     }
-    
+
     @Test
-    public void testGetAllStudents() throws Exception{
+    public void testGetAllStudents() throws Exception {
         //ARRANGE
-        Student testClone=new Student("0001");
+        Student testClone = new Student("0001");
         testClone.setFirstName("Ada");
         testClone.setLastName("Lovelace");
         testClone.setCohort("Java-May-1845");
-        
+
         //ACT & ASSERT
         assertEquals(1, service.getAllStudents().size(), "Should only have 1 student");
         assertTrue(service.getAllStudents().contains(testClone), "This one student should be Ada");
     }
-    
+
     @Test
-    public void testGetStudent() throws Exception{
+    public void testGetStudent() throws Exception {
         //ARRANGE
-        Student testClone=new Student("0001");
+        Student testClone = new Student("0001");
         testClone.setFirstName("Ada");
         testClone.setLastName("Lovelace");
         testClone.setCohort("Java-May-1845");
-        
+
         //ACT & ASSERT
-        Student shouldBeAda=service.getStudent("0001");
+        Student shouldBeAda = service.getStudent("0001");
         assertNotNull(shouldBeAda, "Getting 0001 should not be null");
         assertEquals(testClone, shouldBeAda, "Student stored under 0001 should be Ada");
-        
-        Student shouldBeNull=service.getStudent("0042");
+
+        Student shouldBeNull = service.getStudent("0042");
         assertNull(shouldBeNull, "Getting 0042 should be null");
     }
-    
+
     @Test
-    public void testRemoveStudent() throws Exception{
+    public void testRemoveStudent() throws Exception {
         //ARRANGE
-        Student testClone=new Student("0001");
+        Student testClone = new Student("0001");
         testClone.setFirstName("Ada");
         testClone.setLastName("Lovelace");
         testClone.setCohort("Java-May-1845");
-        
+
         //ACT & ASSERT
-        Student shouldBeAda=service.removeStudent("0001");
+        Student shouldBeAda = service.removeStudent("0001");
         assertNotNull(shouldBeAda, "Removing 0001 should not be null");
         assertEquals(testClone, shouldBeAda, "Student removed from 0001 should be Ada");
-        
-        Student shouldBeNull=service.removeStudent("0042");
+
+        Student shouldBeNull = service.removeStudent("0042");
         assertNull(shouldBeNull, "Removing 0042 should be null");
     }
 }
