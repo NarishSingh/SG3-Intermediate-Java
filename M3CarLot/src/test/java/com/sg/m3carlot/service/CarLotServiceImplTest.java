@@ -25,8 +25,8 @@ public class CarLotServiceImplTest {
     Car lowendBlueCorolla_003;
     Car midendWhiteLC_004;
     Car midendBlackSupra_005;
-    Car highendBlack911_007;
     Car highendGrayGTR_006;
+    Car highendBlack911_007;
 
     public CarLotServiceImplTest() {
         testDAO = new CarLotDAOImpl();
@@ -170,7 +170,7 @@ public class CarLotServiceImplTest {
             fail("Valid car, shouldn't throw any exceptions");
         }
     }
-    
+
     @Test
     public void testGetAllCars() throws NoSuchCarException {
         final String testVIN = "001";
@@ -257,7 +257,7 @@ public class CarLotServiceImplTest {
         assertTrue(highEnd.contains(highendGray911_001), "High end list must contain a gray 911");
         assertTrue(highEnd.contains(highendGrayGTR_006), "High end list must contain a gray GT-R");
     }
-    
+
     @Test
     public void testGetCarsByMakeAndModel() {
         final String MAKE_P = "Porsche";
@@ -289,10 +289,53 @@ public class CarLotServiceImplTest {
 
         assertEquals(salePrice, testService.getACar(testVIN).getPrice().intValue(), "The sale price of a $161,800.00 Porsche should be $149,665");
     }
-/*
-    @Test
-    public void testSellCar() {
 
+    /*selling*/
+    @Test
+    public void testSellCarSuccess() throws NoSuchCarException, OverpaidPriceException, UnderpaidPriceException {
+        //buying black 911
+        final String black911VIN = "007";
+        final BigDecimal exactPay = new BigDecimal("161800.00");
+
+        try {
+            CarKey sold = testService.sellCar(black911VIN, exactPay);
+
+            List<Car> oneSale = testService.getAllCars();
+
+            assertEquals(6, oneSale.size(), "Out of 7 total cars, one should've been sold");
+            assertFalse(oneSale.contains(highendBlack911_007), "Black 911 should've been sold");
+        } catch (NoSuchCarException e) {
+            fail("Valid purchase. Shouldn't be failing");
+        }
     }
-     */
+
+    @Test
+    public void testSellCarUnderPay() throws NoSuchCarException, OverpaidPriceException, UnderpaidPriceException {
+        //buying black 911
+        final String black911VIN = "007";
+        final BigDecimal underPay = new BigDecimal("151800.00");
+
+        try {
+            CarKey failedSale = testService.sellCar(black911VIN, underPay);
+        } catch (NoSuchCarException | OverpaidPriceException e) {
+            fail("Wrong Exception");
+        } catch (UnderpaidPriceException e) {
+            return; //the expected exception
+        }
+    }
+
+    @Test
+    public void testSellCarOverPay() throws NoSuchCarException, OverpaidPriceException, UnderpaidPriceException {
+        //buying black 911
+        final String black911VIN = "007";
+        final BigDecimal overPay = new BigDecimal("171800.00");
+
+        try {
+            CarKey failedSale = testService.sellCar(black911VIN, overPay);
+        } catch (NoSuchCarException | UnderpaidPriceException e) {
+            fail("Wrong Exception");
+        } catch (OverpaidPriceException e) {
+            return; //the expected exception
+        }
+    }
 }
