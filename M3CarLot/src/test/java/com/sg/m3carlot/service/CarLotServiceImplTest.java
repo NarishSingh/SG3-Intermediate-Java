@@ -20,14 +20,13 @@ public class CarLotServiceImplTest {
     private CarLotService testService;
     private CarLotDAO testDAO;
 
-    Car highendGray911;
-    Car highendBlackGTR;
-    Car lowendBlueCorolla;
-    Car midendWhiteLC;
-    Car midendBlackSupra;
-    Car highendBlack911;
-    Car highendGrayGTR;
-//    List<Car> allCars;
+    Car highendGray911_001;
+    Car highendBlackGTR_002;
+    Car lowendBlueCorolla_003;
+    Car midendWhiteLC_004;
+    Car midendBlackSupra_005;
+    Car highendBlack911_007;
+    Car highendGrayGTR_006;
 
     public CarLotServiceImplTest() {
         testDAO = new CarLotDAOImpl();
@@ -38,7 +37,7 @@ public class CarLotServiceImplTest {
     public void setUp() {
         testDAO = new CarLotDAOImpl();
 
-        //expensive 001
+        //highendGray911_001
         String testVIN = "001";
         CarKey key1 = new CarKey(testVIN);
         key1.setLaserCut(true);
@@ -137,14 +136,27 @@ public class CarLotServiceImplTest {
         test7.setOdometerMiles(125);
 
         //obj
-        highendGray911 = testDAO.addCar(testVIN, test1);
-        highendBlackGTR = testDAO.addCar(testVIN2, test2);
-        lowendBlueCorolla = testDAO.addCar(testVIN3, test3);
-        midendWhiteLC = testDAO.addCar(testVIN4, test4);
-        midendBlackSupra = testDAO.addCar(testVIN5, test5);
-        highendBlack911 = testDAO.addCar(testVIN6, test6);
-        highendGrayGTR = testDAO.addCar(testVIN7, test7);
-        
+        testDAO.addCar(testVIN, test1);
+        highendGray911_001 = testDAO.getCar(testVIN);
+
+        testDAO.addCar(testVIN2, test2);
+        highendBlackGTR_002 = testDAO.getCar(testVIN2);
+
+        testDAO.addCar(testVIN3, test3);
+        lowendBlueCorolla_003 = testDAO.getCar(testVIN3);
+
+        testDAO.addCar(testVIN4, test4);
+        midendWhiteLC_004 = testDAO.getCar(testVIN4);
+
+        testDAO.addCar(testVIN5, test5);
+        midendBlackSupra_005 = testDAO.getCar(testVIN5);
+
+        testDAO.addCar(testVIN6, test6);
+        highendGrayGTR_006 = testDAO.getCar(testVIN6);
+
+        testDAO.addCar(testVIN7, test7);
+        highendBlack911_007 = testDAO.getCar(testVIN7);
+
         testService = new CarLotServiceImpl(testDAO); //attach populated dao to servive
     }
 
@@ -153,12 +165,12 @@ public class CarLotServiceImplTest {
         final String testVIN = "001";
 
         try {
-            assertEquals(testService.getACar(testVIN), highendGray911, "Car 001 should've been added");
+            assertEquals(highendGray911_001, testService.getACar(testVIN), "Car 001 should've been added");
         } catch (NoSuchCarException e) {
             fail("Valid car, shouldn't throw any exceptions");
         }
     }
-
+    
     @Test
     public void testGetAllCars() throws NoSuchCarException {
         final String testVIN = "001";
@@ -171,28 +183,28 @@ public class CarLotServiceImplTest {
 
         List<Car> allCars = testService.getAllCars();
         assertNotNull(allCars, "List shouldn't be empty");
-        assertEquals(7, allCars.size(), "List should have 7 cars"); //FIXME registing as having 0
+        assertEquals(7, allCars.size(), "List should have 7 cars");
 
         try {
-            assertEquals(testService.getACar(testVIN), highendGray911, "Car 001 should be gray 911 Turbo S");
+            assertEquals(testService.getACar(testVIN), highendGray911_001, "Car 001 should be gray 911 Turbo S");
             assertTrue(allCars.contains(testService.getACar(testVIN)), "Car 001 should be in lot");
 
-            assertEquals(testService.getACar(testVIN2), highendBlackGTR, "Car 002 should be black GT-R");
+            assertEquals(testService.getACar(testVIN2), highendBlackGTR_002, "Car 002 should be black GT-R");
             assertTrue(allCars.contains(testService.getACar(testVIN2)), "Car 002 should be in lot");
 
-            assertEquals(testService.getACar(testVIN3), lowendBlueCorolla, "Car 003 should be blue Corolla");
+            assertEquals(testService.getACar(testVIN3), lowendBlueCorolla_003, "Car 003 should be blue Corolla");
             assertTrue(allCars.contains(testService.getACar(testVIN3)), "Car 003 should be in lot");
 
-            assertEquals(testService.getACar(testVIN4), midendWhiteLC, "Car 004 should be white LC");
+            assertEquals(testService.getACar(testVIN4), midendWhiteLC_004, "Car 004 should be white LC");
             assertTrue(allCars.contains(testService.getACar(testVIN4)), "Car 004 should be in lot");
 
-            assertEquals(testService.getACar(testVIN5), midendBlackSupra, "Car 005 should be black Supra");
+            assertEquals(testService.getACar(testVIN5), midendBlackSupra_005, "Car 005 should be black Supra");
             assertTrue(allCars.contains(testService.getACar(testVIN5)), "Car 005 should be in lot");
 
-            assertEquals(testService.getACar(testVIN6), highendBlack911, "Car 006 should be black 911");
+            assertEquals(testService.getACar(testVIN6), highendGrayGTR_006, "Car 006 should be black 911");
             assertTrue(allCars.contains(testService.getACar(testVIN6)), "Car 006 should be in lot");
 
-            assertEquals(testService.getACar(testVIN7), highendGrayGTR, "Car 007 should be gray GT-R");
+            assertEquals(testService.getACar(testVIN7), highendBlack911_007, "Car 007 should be gray GT-R");
             assertTrue(allCars.contains(testService.getACar(testVIN7)), "Car 007 should be in lot");
         } catch (NoSuchCarException e) {
             fail("All valid cars, shouldn't throw exceptions");
@@ -209,14 +221,14 @@ public class CarLotServiceImplTest {
 
         assertNotNull(grayCars, "Gray car list shouldn't be empty");
         assertEquals(2, grayCars.size(), "Gray car list should have 2 entries");
-        assertTrue(grayCars.contains(highendGray911), "Gray cars should include a 911 Turbo S");
-        assertTrue(grayCars.contains(highendGrayGTR), "Gray cars should include a GT-R");
+        assertTrue(grayCars.contains(highendGray911_001), "Gray cars should include a 911 Turbo S");
+        assertTrue(grayCars.contains(highendGrayGTR_006), "Gray cars should include a GT-R");
 
         assertNotNull(blackCars, "Black car list shouldn't be empty");
         assertEquals(3, blackCars.size(), "Black car list should have 3 entries");
-        assertTrue(blackCars.contains(highendBlack911), "Black cars should include a 911 Turbo S");
-        assertTrue(blackCars.contains(highendBlackGTR), "Black cars should include a GTR");
-        assertTrue(blackCars.contains(midendBlackSupra), "Black cars should include a Supra");
+        assertTrue(blackCars.contains(highendBlack911_007), "Black cars should include a 911 Turbo S");
+        assertTrue(blackCars.contains(highendBlackGTR_002), "Black cars should include a GTR");
+        assertTrue(blackCars.contains(midendBlackSupra_005), "Black cars should include a Supra");
     }
 
     @Test
@@ -231,19 +243,19 @@ public class CarLotServiceImplTest {
 
         assertNotNull(lowEnd, "Low end car list shouldn't be empty");
         assertEquals(1, lowEnd.size(), "Should be 1 low end car");
-        assertTrue(lowEnd.contains(lowendBlueCorolla), "Low end list should only be the Corolla");
+        assertTrue(lowEnd.contains(lowendBlueCorolla_003), "Low end list should only be the Corolla");
 
         assertNotNull(midEnd, "Mid end car list shouldn't be empty");
-        assertEquals(2, midEnd.size(), "Should be 2 mid end cars");
-        assertTrue(midEnd.contains(midendWhiteLC), "Mid end list should contain the LC");
-        assertTrue(midEnd.contains(midendBlackSupra), "Mid end list should contain the Supra");
+        assertEquals(3, midEnd.size(), "Should be 3 total, 2 mid end cars and 1 low end");
+        assertTrue(midEnd.contains(midendWhiteLC_004), "Mid end list must contain the LC");
+        assertTrue(midEnd.contains(midendBlackSupra_005), "Mid end list must contain the Supra");
 
         assertNotNull(highEnd, "High end car list shouldn't be empty");
-        assertEquals(4, highEnd.size(), "Should be 4 high end cars");
-        assertTrue(highEnd.contains(highendBlack911), "High end list should contain a black 911");
-        assertTrue(highEnd.contains(highendBlackGTR), "High end list should contain a black GT-R");
-        assertTrue(highEnd.contains(highendGray911), "High end list should contain a gray 911");
-        assertTrue(highEnd.contains(highendGrayGTR), "High end list should contain a gray GT-R");
+        assertEquals(7, highEnd.size(), "Should be 7 total, 4 high end cars, and the rest of the vehicles");
+        assertTrue(highEnd.contains(highendBlack911_007), "High end list must contain a black 911");
+        assertTrue(highEnd.contains(highendBlackGTR_002), "High end list must contain a black GT-R");
+        assertTrue(highEnd.contains(highendGray911_001), "High end list must contain a gray 911");
+        assertTrue(highEnd.contains(highendGrayGTR_006), "High end list must contain a gray GT-R");
     }
 
     /*
