@@ -2,10 +2,13 @@ package com.sg.M3DVDStream.dao;
 
 import com.sg.M3DVDStream.dto.DVD;
 import java.util.*;
+import java.util.stream.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 public class DVDLibraryDAOImpl implements DVDLibraryDAO {
 
@@ -55,43 +58,86 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
 
         return removedDVD;
     }
-    /*
+
     @Override
-    List<DVD> getDVDsSince(int year) throws DVDLibraryDAOException{
+    public List<DVD> getDVDsSince(int year) throws DVDLibraryDAOException {
         loadLibrary();
+
+        List<DVD> byYear = library.stream()
+                .filter((dvd) -> dvd.getReleaseDate().getYear >= year)
+                .collect(Collectors.toList());
+
+        return byYear;
     }
-    
+
     //TODO may need to revise return type, must list DVD's by rating
     @Override
-    List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException{
+    public List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException {
         loadLibrary();
+
+        List<DVD> byRating = library.stream()
+                .filter((dvd) -> dvd.getRating.equals(rating))
+                .collect(Collectors.toList());
+
+        return byRating;
     }
-    
+
     @Override
-    List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException{
+    public List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException {
         loadLibrary();
+
+        List<DVD> byStudio = library.stream()
+                .filter((dvd) -> dvd.getStudio.equals(studio))
+                .collect(Collectors.toList());
+
+        return byStudio;
     }
-    
+
     @Override
-    int averageAgeOfDVDs() throws DVDLibraryDAOException{
+    public int averageAgeOfDVDs() throws DVDLibraryDAOException {
         loadLibrary();
+        
+        int avgDVDage = library.stream()
+                .mapToInt((dvd) -> {
+                    Period agePeriod = dvd.getReleaseDate().until(LocalDate.now()).getYears();
+                    int age = agePeriod.getYears();
+                })
+                .average();
+
+        return avgDVDage;
     }
-    
+
     @Override
-    DVD getNewestDVD() throws DVDLibraryDAOException{
+    public DVD getNewestDVD() throws DVDLibraryDAOException {
         loadLibrary();
+        
+        int oldest = 133; //oldest movie in history is 132 yrs
+        int age;
+        
+        /*
+        DVD newestDVD = library.stream()
+                .mapToInt((dvd) -> {
+                    Period agePeriod = dvd.getReleaseDate().until(LocalDate.now()).getYears();
+                    age = agePeriod.getYears();
+                })
+                .filter((dvd) -> age<oldest);
+                oldest=age;
+                });
+                
+        return newestDVD;
+        */
     }
-    
+
     @Override
-    DVD getOldestDVD() throws DVDLibraryDAOException{
+    public DVD getOldestDVD() throws DVDLibraryDAOException {
         loadLibrary();
     }
-    
+
     @Override
-    BigDecimal averageNotes() throws DVDLibraryDAOException{
+    public BigDecimal averageNotes() throws DVDLibraryDAOException {
         loadLibrary();
     }
-*/
+
     /*Data Unmarshalling*/
     /**
      * Unmarshall a delimited line of text from LIBRARY_FILE into a DVD obj

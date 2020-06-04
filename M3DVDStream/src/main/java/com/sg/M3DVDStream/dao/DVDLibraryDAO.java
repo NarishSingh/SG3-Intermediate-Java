@@ -58,7 +58,7 @@ public interface DVDLibraryDAO {
     DVD removeDVD(String title) throws DVDLibraryDAOException;
     
     /*new stream methods*/
-    /*
+    
     List<DVD> getDVDsSince(int year) throws DVDLibraryDAOException;
     
     List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException; //TODO may need to revise return type, must list DVD's by rating
@@ -72,5 +72,4 @@ public interface DVDLibraryDAO {
     DVD getOldestDVD() throws DVDLibraryDAOException;
     
     BigDecimal averageNotes() throws DVDLibraryDAOException; //wtf does this even mean
-    */
 }
