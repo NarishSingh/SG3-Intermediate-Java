@@ -14,7 +14,6 @@ New Stream API implementations
 package com.sg.M3DVDStream.dao;
 
 import com.sg.M3DVDStream.dto.DVD;
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface DVDLibraryDAO {
@@ -71,5 +70,5 @@ public interface DVDLibraryDAO {
     
     DVD getOldestDVD() throws DVDLibraryDAOException;
     
-    BigDecimal averageNotes() throws DVDLibraryDAOException; //wtf does this even mean
+    double averageNotes() throws DVDLibraryDAOException; //wtf does this even mean
 }
