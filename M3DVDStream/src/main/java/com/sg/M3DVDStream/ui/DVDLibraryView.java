@@ -233,9 +233,9 @@ public class DVDLibraryView {
      * @param dvdList {List} DVD library key set
      */
     public void displayLibrary(List<DVD> dvdList) {
-        for (DVD currentDVD : dvdList) {
+        dvdList.forEach((currentDVD) -> {
             io.print(currentDVD.getTitle());
-        }
+        });
 
         io.readString("Press ENTER to continue.");
     }
@@ -286,7 +286,27 @@ public class DVDLibraryView {
     }
 
     /*2-3 - TITLES SINCE YEAR*/
- /*2-4 - TITLES BY STUDIO*/
+    /**
+     * Display Get Titles Since Year banner for UI
+     */
+    public void displayGetSinceYearBanner(){
+        io.print("===Get Titles Since Year===");
+    }
+    
+    public int getYearFromUser(){
+        return io.readInt("Please enter the minimum year: ", 1888, 2020); //oldest film is 1888
+    }
+    
+    /*2-4 - TITLES BY STUDIO*/
+    public void displayGetByStudioBanner(){
+        io.print("===Get Titles By Studio===");
+    }
+    
+    public String getStudioFromUser(){
+        return io.readString("Please enter studio name: ");
+    }
+    
+    
  /*2-5 - FILM AVG AGE*/
  /*2-6 - NEWEST TITLE*/
  /*2-7 - OLDEST TITLE*/

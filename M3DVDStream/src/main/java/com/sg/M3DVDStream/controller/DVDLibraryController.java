@@ -74,11 +74,11 @@ public class DVDLibraryController {
                                     break;
                                 }
                                 case 3: {
-                                    //view titles since inputted year
+                                    getSinceYear();
                                     break;
                                 }
                                 case 4: {
-                                    //view by studio
+                                    getByStudio();
                                     break;
                                 }
                                 case 5: { //stats
@@ -214,6 +214,7 @@ public class DVDLibraryController {
 
     }
 
+    /*ANY VIEW DATA TYPE OF METHODS SHOULD BE PUBLIC*/
     /**
      * Display banners for DVD entry viewing. Get title from user, then retrieve
      * and display DVD obj
@@ -228,7 +229,35 @@ public class DVDLibraryController {
     }
 
     //TODO NEW METHODS HERE
-    
+    /**
+     * Display banner for Get Titles Since Year. Get year as int between 1888 to
+     * 2020 from user, then retrieve list of DVD's after this year and print to
+     * UI
+     *
+     * @throws DVDLibraryDAOException if cannot read from library
+     */
+    public void getSinceYear() throws DVDLibraryDAOException {
+        view.displayGetSinceYearBanner();
+        int minYear = view.getYearFromUser();
+        List<DVD> titlesByYear = dao.getDVDsSince(minYear);
+        view.displayLibrary(titlesByYear);
+    }
+
+    /**
+     * Display banner for Get Titles by Studio. Get studio as String from user,
+     * retrieve List of DVD's which contain this studio name as a field, and
+     * print List to UI
+     *
+     * @throws DVDLibraryDAOException if cannot read from library
+     */
+    public void getByStudio() throws DVDLibraryDAOException {
+        view.displayGetByStudioBanner();
+        String studioName = view.getStudioFromUser();
+        List<DVD> titlesByStudio = dao.getDVDsByStudio(studioName);
+        view.displayLibrary(titlesByStudio);
+    }
+
+    /*error and exit*/
     /**
      * Display banner for an invalid Menu choice
      */
