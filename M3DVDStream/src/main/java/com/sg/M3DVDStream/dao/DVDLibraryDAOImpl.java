@@ -2,11 +2,9 @@ package com.sg.M3DVDStream.dao;
 
 import com.sg.M3DVDStream.dto.DVD;
 import java.util.*;
-import java.util.stream.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
@@ -63,8 +61,10 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
     public List<DVD> getDVDsSince(int year) throws DVDLibraryDAOException {
         loadLibrary();
 
-        List<DVD> byYear = library.stream()
-                .filter((dvd) -> dvd.getReleaseDate().getYear >= year)
+        List<DVD> libraryList = new ArrayList<>(library.values());
+        
+        List<DVD> byYear = libraryList.stream()
+                .filter((dvd) -> dvd.getReleaseDate().getYear() >= year)
                 .collect(Collectors.toList());
 
         return byYear;
@@ -75,8 +75,10 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
     public List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException {
         loadLibrary();
 
-        List<DVD> byRating = library.stream()
-                .filter((dvd) -> dvd.getRating.equals(rating))
+        List<DVD> libraryList = new ArrayList<>(library.values());
+        
+        List<DVD> byRating = libraryList.stream()
+                .filter((dvd) -> dvd.getMpaaRating().equals(rating))
                 .collect(Collectors.toList());
 
         return byRating;
@@ -85,25 +87,32 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
     @Override
     public List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException {
         loadLibrary();
+        
+        List<DVD> libraryList = new ArrayList<>(library.values());
 
-        List<DVD> byStudio = library.stream()
-                .filter((dvd) -> dvd.getStudio.equals(studio))
+        List<DVD> byStudio = libraryList.stream()
+                .filter((dvd) -> dvd.getStudio().equals(studio))
                 .collect(Collectors.toList());
 
         return byStudio;
     }
 
     @Override
-    public int averageAgeOfDVDs() throws DVDLibraryDAOException {
+    public double averageAgeOfDVDs() throws DVDLibraryDAOException {
         loadLibrary();
         
-        int avgDVDage = library.stream()
+        List<DVD> libraryList = new ArrayList<>(library.values());
+        
+        OptionalDouble avgDVDageOD = libraryList.stream()
                 .mapToInt((dvd) -> {
-                    Period agePeriod = dvd.getReleaseDate().until(LocalDate.now()).getYears();
-                    int age = agePeriod.getYears();
+                    int age  = dvd.getReleaseDate().until(LocalDate.now()).getYears();
+                    
+                    return age;
                 })
                 .average();
 
+        double avgDVDage = avgDVDageOD.orElse(-1);
+        
         return avgDVDage;
     }
 

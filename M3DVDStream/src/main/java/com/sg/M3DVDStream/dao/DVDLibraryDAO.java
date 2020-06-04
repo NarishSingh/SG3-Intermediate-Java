@@ -65,7 +65,7 @@ public interface DVDLibraryDAO {
     
     List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException;
     
-    int averageAgeOfDVDs() throws DVDLibraryDAOException;
+    double averageAgeOfDVDs() throws DVDLibraryDAOException;
     
     DVD getNewestDVD() throws DVDLibraryDAOException;
     
