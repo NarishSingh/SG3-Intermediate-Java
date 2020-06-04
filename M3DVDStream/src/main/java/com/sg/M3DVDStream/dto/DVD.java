@@ -4,8 +4,7 @@ now with methods for testing
 package com.sg.M3DVDStream.dto;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.*;
 
 public class DVD {
 
