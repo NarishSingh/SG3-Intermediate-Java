@@ -429,7 +429,7 @@ public class DVDLibraryView {
     }
 
     public void displayAvgUserNotes(double noteAvg) {
-        io.print("You have an average of" + noteAvg + " notes in your Library.");
+        io.print("You have an average of " + noteAvg + " notes in your Library.");
         io.readString("Press ENTER to continue");
     }
 

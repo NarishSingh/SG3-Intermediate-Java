@@ -9,8 +9,7 @@ New Stream API implementations
 -Find the newest movie in your collection
 -Find the oldest movie in your collection
 -Find the average number of notes associated with movies in your collection
-*/
-
+ */
 package com.sg.M3DVDStream.dao;
 
 import com.sg.M3DVDStream.dto.DVD;
@@ -25,7 +24,7 @@ public interface DVDLibraryDAO {
      * @param title {String} title associated with DVD
      * @param dvd   {DVD} DVD object
      * @return {DVD} obj for the associated/added title, null otherwise
-     * @throws DVDLibraryDAOException
+     * @throws DVDLibraryDAOException if library cannot be loaded or written to
      */
     DVD addDVD(String title, DVD dvd) throws DVDLibraryDAOException;
 
@@ -55,21 +54,65 @@ public interface DVDLibraryDAO {
      * @throws DVDLibraryDAOException if library cannot be loaded or written to
      */
     DVD removeDVD(String title) throws DVDLibraryDAOException;
-    
+
     /*new stream methods*/
-    //TODO DO JAVADOC
-    
+    /**
+     * Create a List of DVD obj's release after a given year
+     *
+     * @param year {int} 1888-2020
+     * @return {List} All DVD's in library released in or after the year of the
+     *         argument
+     * @throws DVDLibraryDAOException if library cannot be loaded
+     */
     List<DVD> getDVDsSince(int year) throws DVDLibraryDAOException;
-    
-    List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException; //TODO may need to revise return type, must list DVD's by rating
-    
+
+    /**
+     * Create a List of DVD's obj's by MPAA rating
+     *
+     * @param rating {String} G, PG, PG-13, R, or none for international films
+     * @return {List} All DVD's with the rating of the argument
+     * @throws DVDLibraryDAOException if library cannot be loaded
+     */
+    List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException;
+
+    /**
+     * Create a List of DVD's obj's by studio
+     *
+     * @param studio {String} the production studio
+     * @return {List} All DVD's from the studio specified in the argument
+     * @throws DVDLibraryDAOException if library cannot be loaded
+     */
     List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException;
-    
+
+    /**
+     * Calculates the average age of the films in library
+     *
+     * @return {double} average age
+     * @throws DVDLibraryDAOException if library cannot be loaded
+     */
     double averageAgeOfDVDs() throws DVDLibraryDAOException;
-    
+
+    /**
+     * Calculates and finds the newest DVD obj by release date
+     *
+     * @return {DVD} the DVD with the most recent release date
+     * @throws DVDLibraryDAOException if library cannot be loaded
+     */
     DVD getNewestDVD() throws DVDLibraryDAOException;
-    
+
+    /**
+     * Calculates and finds the oldest DVD obj by release date
+     *
+     * @return {DVD the DVD with the oldest release date
+     * @throws DVDLibraryDAOException if library cannot be loaded
+     */
     DVD getOldestDVD() throws DVDLibraryDAOException;
-    
+
+    /**
+     * Calculate the average amount of notes
+     *
+     * @return {double} basically the DVD count because each DVD has one note
+     * @throws DVDLibraryDAOException
+     */
     double averageNotes() throws DVDLibraryDAOException; //wtf does this even mean
 }
