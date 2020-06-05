@@ -9,12 +9,6 @@ package com.sg.m3vendingmachine.dao;
  *
  * @author naris
  */
-public class VendingPersistenceException extends Exception {
-    public VendingPersistenceException(String msg){
-        super(msg);
-    }
+public interface AuditDAO {
     
-    public VendingPersistenceException(String msg, Throwable cause){
-        super(msg, cause);
-    }
 }
