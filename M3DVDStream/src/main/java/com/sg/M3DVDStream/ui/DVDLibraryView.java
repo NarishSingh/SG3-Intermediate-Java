@@ -22,9 +22,9 @@ public class DVDLibraryView {
         io.print("***Menu***");
         io.print("1 | Edit Library");
         io.print("2 | View Library");
-        io.print("3 | -Exit-");
+        io.print("0 | -Exit-");
 
-        return io.readInt("Action: ", 1, 3);
+        return io.readInt("Action: ", 0, 2);
     }
 
     /**
@@ -37,9 +37,9 @@ public class DVDLibraryView {
         io.print("1 | Add DVD");
         io.print("2 | Remove DVD");
         io.print("3 | Edit DVD Info");
-        io.print("4 | -Return-");
+        io.print("0 | -Return-");
 
-        return io.readInt("Action", 1, 4);
+        return io.readInt("Action", 0, 3);
     }
 
     /**
@@ -54,14 +54,15 @@ public class DVDLibraryView {
         io.print("2 | View by Title");
         io.print("3 | Titles Since Year");
         io.print("4 | Titles By Studio");
+        io.print("5 | Titles by MPAA Rating");
         io.print("---Library Stats---");
-        io.print("5 | Average Film Age");
-        io.print("6 | Newest Title");
-        io.print("7 | Oldest Title");
-        io.print("8 | Average Notes and comments");
-        io.print("9 | -Return-");
+        io.print("6 | Average Film Age");
+        io.print("7 | Newest Title");
+        io.print("8 | Oldest Title");
+        io.print("9 | Average Notes and comments");
+        io.print("0 | -Return-");
 
-        return io.readInt("Action", 1, 9);
+        return io.readInt("Action", 0, 9);
     }
 
     /*1-1 - ADD DVD*/
@@ -256,16 +257,15 @@ public class DVDLibraryView {
 
     /*2-2 - VIEW DVD INFO*/
     /**
-     * Retrieve and print DVD information to UI
+     * Retrieve and print DVD information to UI, with validation
      *
      * @param dvd {DVD} DVD obj to be viewed
      */
     public void getDVDEntry(DVD dvd) {
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-
-        String dateFormatted = dvd.getReleaseDate().format(f);
-
         if (dvd != null) {
+            DateTimeFormatter f = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+            String dateFormatted = dvd.getReleaseDate().format(f);
+
             String dvdInfo = String.format("\"%s,\" debuted: %s, Directed by %s, %s, MPAA: %s, My Reactions: %s",
                     dvd.getTitle(), dateFormatted, dvd.getDirector(),
                     dvd.getStudio(), dvd.getMpaaRating(), dvd.getUserRating());
@@ -289,29 +289,151 @@ public class DVDLibraryView {
     /**
      * Display Get Titles Since Year banner for UI
      */
-    public void displayGetSinceYearBanner(){
+    public void displayGetSinceYearBanner() {
         io.print("===Get Titles Since Year===");
     }
-    
-    public int getYearFromUser(){
+
+    /**
+     * Get the year from user
+     *
+     * @return {int} an integer between 1888 to 2020
+     */
+    public int getYearFromUser() {
         return io.readInt("Please enter the minimum year: ", 1888, 2020); //oldest film is 1888
     }
-    
+
+    public void displayGetSinceYearFailBanner() {
+        io.readString("No titles within range of your inputted year to now. Press ENTER to continue");
+    }
+
     /*2-4 - TITLES BY STUDIO*/
-    public void displayGetByStudioBanner(){
+    /**
+     * Display Get Titles By Studio banner for UI
+     */
+    public void displayGetByStudioBanner() {
         io.print("===Get Titles By Studio===");
     }
-    
-    public String getStudioFromUser(){
+
+    /**
+     * Get studio name from user
+     *
+     * @return {String} the name of the studio
+     */
+    public String getStudioFromUser() {
         return io.readString("Please enter studio name: ");
     }
-    
-    
- /*2-5 - FILM AVG AGE*/
- /*2-6 - NEWEST TITLE*/
- /*2-7 - OLDEST TITLE*/
- /*2-8 - AVG NOTES*/
- /*1-4 - EXIT*/
+
+    /**
+     * If no titles match studio name, display Get By Studio fail banner for UI
+     */
+    public void displayGetByStudioFailBanner() {
+        io.readString("No titles from this studio in library. Press ENTER to continue");
+    }
+
+    /*2-5 - TITLES BY MPAA RATING*/
+    /**
+     * Get MPAA rating from user as String, with validation
+     */
+    public void displayGetByRatingBanner() {
+        io.print("===Get Titles By Rating===");
+    }
+
+    /**
+     * Get and validate an MPAA rating from user
+     *
+     * @return {String} G, PG, PG-13, R, or none for international films
+     */
+    public String getRatingFromUser() {
+        String userMPAArating;
+
+        do {
+            userMPAArating = io.readString("Please enter MPAA Rating: ");
+        } while (!userMPAArating.equals("G")
+                && !userMPAArating.equals("PG")
+                && !userMPAArating.equals("PG-13")
+                && !userMPAArating.equals("R")
+                && !userMPAArating.equals("none"));
+
+        return userMPAArating;
+    }
+
+    /**
+     * Display Get Titles by Rating fail banner if no titles match that rating
+     */
+    public void displayGetByRatingFailBanner() {
+        io.readString("No titles with this rating in library. Press ENTER to continue");
+    }
+
+    /*2-6 - FILM AVG AGE*/
+    /**
+     * Display Average Age of Films banner for UI
+     */
+    public void displayGetAvgAgeBanner() {
+        io.print("===Average Age of Films===");
+    }
+
+    /**
+     * Display the average age of films in library for UI
+     *
+     * @param avg {double} average age of film
+     */
+    public void displayAvgFilmAge(double avg) {
+        io.print("Your library has films that are on average " + avg + " years old!");
+        io.readString("Press ENTER to continue");
+    }
+
+    /*2-7 - NEWEST TITLE*/
+    /**
+     * Display Newest Title banner for UI
+     */
+    public void displayNewestTitleBanner() {
+        io.print("===Newest Title===");
+    }
+
+    /**
+     * Display newest DVD by release date
+     *
+     * @param newest {DVD} newest DVD release in library
+     */
+    public void displayNewestTitle(DVD newest) {
+        io.print("Newest title by release date is:");
+        getDVDEntry(newest);
+        io.readString("Press ENTER to continue");
+    }
+
+    /*2-8 - OLDEST TITLE*/
+    /**
+     * Display Oldest Title banner for UI
+     */
+    public void displayOldestTitleBanner() {
+        io.print("===Oldest Title===");
+    }
+
+    /**
+     * Display Oldest DVD by release date
+     *
+     * @param oldest {DVD} Oldest DVD release in library
+     */
+    public void displayOldestTitle(DVD oldest) {
+        io.print("Oldest title by release date is:");
+        getDVDEntry(oldest);
+        io.readString("Press ENTER to continue");
+    }
+
+    /*2-9 - AVG NOTES*/
+    /**
+     * Display Average Notes Banner
+     */
+    public void displayAvgNotesBanner() {
+        io.print("===Average User Notes===");
+    }
+
+    public void displayAvgUserNotes(double noteAvg) {
+        io.print("You have an average of" + noteAvg + " notes in your Library.");
+        io.readString("Press ENTER to continue");
+    }
+
+    /*1-4 - EXIT*/
     /**
      * Display Exit banner in UI
      */

@@ -49,7 +49,7 @@ public class DVDLibraryController {
                                     editDVD();
                                     break;
                                 }
-                                case 4: {
+                                case 0: {
                                     editingLibrary = false;
                                     break;
                                 }
@@ -81,23 +81,27 @@ public class DVDLibraryController {
                                     getByStudio();
                                     break;
                                 }
-                                case 5: { //stats
-                                    //average age of film
+                                case 5: {
+                                    getByRating();
                                     break;
                                 }
-                                case 6: {
-                                    //newest
+                                case 6: { //stats
+                                    getAvgAge();
                                     break;
                                 }
                                 case 7: {
-                                    //oldest
+                                    getNewestDVD();
                                     break;
                                 }
                                 case 8: {
-                                    //average num of notes
+                                    getOldestDVD();
                                     break;
                                 }
                                 case 9: {
+                                    getAvgNotes();
+                                    break;
+                                }
+                                case 0: {
                                     viewingLibrary = false;
                                     break;
                                 }
@@ -108,7 +112,7 @@ public class DVDLibraryController {
                         }
                         break;
                     }
-                    case 3: {
+                    case 0: {
                         inProgram = false;
                         break;
                     }
@@ -211,7 +215,6 @@ public class DVDLibraryController {
         } else {
             view.displayLibraryEmptyBanner();
         }
-
     }
 
     /*ANY VIEW DATA TYPE OF METHODS SHOULD BE PUBLIC*/
@@ -240,7 +243,11 @@ public class DVDLibraryController {
         view.displayGetSinceYearBanner();
         int minYear = view.getYearFromUser();
         List<DVD> titlesByYear = dao.getDVDsSince(minYear);
-        view.displayLibrary(titlesByYear);
+        if (titlesByYear.isEmpty()) {
+            view.displayGetSinceYearFailBanner();
+        } else {
+            view.displayLibrary(titlesByYear);
+        }
     }
 
     /**
@@ -254,7 +261,70 @@ public class DVDLibraryController {
         view.displayGetByStudioBanner();
         String studioName = view.getStudioFromUser();
         List<DVD> titlesByStudio = dao.getDVDsByStudio(studioName);
-        view.displayLibrary(titlesByStudio);
+        if (titlesByStudio.isEmpty()) {
+            view.displayGetByStudioFailBanner();
+        } else {
+            view.displayLibrary(titlesByStudio);
+        }
+    }
+
+    /**
+     * Display banners for Get Titles by Rating. Get rating as String from user,
+     * retrieve List of DVD's with this rating, and print to UI
+     *
+     * @throws DVDLibraryDAOException if cannot read from library
+     */
+    public void getByRating() throws DVDLibraryDAOException {
+        view.displayGetByRatingBanner();
+        String rating = view.getRatingFromUser();
+        List<DVD> titlesByRating = dao.getDVDsByRating(rating);
+        if (titlesByRating.isEmpty()) {
+            view.displayGetByRatingFailBanner();
+        } else {
+            view.displayLibrary(titlesByRating);
+        }
+    }
+
+    /**
+     * Display Average Age of Films banners, calculate the average and print to
+     * UI
+     *
+     * @throws DVDLibraryDAOException if cannot read from library
+     */
+    public void getAvgAge() throws DVDLibraryDAOException {
+        view.displayGetAvgAgeBanner();
+        double avgAge = dao.averageAgeOfDVDs();
+        view.displayAvgFilmAge(avgAge);
+    }
+
+    /**
+     * Display Newest Title banners, and then calculate newest DVD by release
+     * date
+     *
+     * @throws DVDLibraryDAOException if cannot read from library
+     */
+    public void getNewestDVD() throws DVDLibraryDAOException {
+        view.displayNewestTitleBanner();
+        DVD newest = dao.getNewestDVD();
+        view.displayNewestTitle(newest);
+    }
+
+    /**
+     * Display Newest Title banners, and then calculate newest DVD by release
+     * date
+     *
+     * @throws DVDLibraryDAOException if cannot read from library
+     */
+    public void getOldestDVD() throws DVDLibraryDAOException {
+        view.displayOldestTitleBanner();
+        DVD oldest = dao.getOldestDVD();
+        view.displayOldestTitle(oldest);
+    }
+
+    public void getAvgNotes() throws DVDLibraryDAOException {
+        view.displayAvgNotesBanner();
+        double noteAvg = dao.averageNotes();
+        view.displayAvgUserNotes(noteAvg);
     }
 
     /*error and exit*/

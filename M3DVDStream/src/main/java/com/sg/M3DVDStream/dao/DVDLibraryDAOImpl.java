@@ -69,6 +69,19 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
         return byYear;
     }
 
+    @Override
+    public List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException {
+        loadLibrary();
+
+        List<DVD> libraryList = new ArrayList<>(library.values());
+
+        List<DVD> byStudio = libraryList.stream()
+                .filter((dvd) -> dvd.getStudio().equals(studio))
+                .collect(Collectors.toList());
+
+        return byStudio;
+    }
+
     //TODO may need to revise return type, must list DVD's by rating
     @Override
     public List<DVD> getDVDsByRating(String rating) throws DVDLibraryDAOException {
@@ -81,19 +94,6 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
                 .collect(Collectors.toList());
 
         return byRating;
-    }
-
-    @Override
-    public List<DVD> getDVDsByStudio(String studio) throws DVDLibraryDAOException {
-        loadLibrary();
-
-        List<DVD> libraryList = new ArrayList<>(library.values());
-
-        List<DVD> byStudio = libraryList.stream()
-                .filter((dvd) -> dvd.getStudio().equals(studio))
-                .collect(Collectors.toList());
-
-        return byStudio;
     }
 
     @Override
@@ -153,7 +153,7 @@ public class DVDLibraryDAOImpl implements DVDLibraryDAO {
                 .count();
 
         int noteCt = (int) noteCtLong;
-        
+
         return noteCt;
     }
 
