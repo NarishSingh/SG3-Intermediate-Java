@@ -14,12 +14,14 @@ public class VMController {
         this.view = view;
     }
 
-    public void run() throws VendingDAOException {
+    /**
+     * App controller
+     */
+    public void run() {
         boolean inProgram = true;
         boolean buying = true;
-        boolean buyingByType = true;
+//        boolean buyingByType = true;
         boolean stocking = true;
-        boolean cashing = true;
 
         try {
             while (inProgram) {
@@ -32,21 +34,9 @@ public class VMController {
                         }
                         break;
                     }
-                    case 2: {
-                        while (buyingByType) {
-                            //buy by type
-                        }
-                        break;
-                    }
-                    case 3: { //TODO for admin, have a password validation
+                    case 2: { //TODO for admin, have a password validation
                         while (stocking) {
                             //stock machine
-                        }
-                        break;
-                    }
-                    case 4: {
-                        while (cashing) {
-                            //cash operations
                         }
                         break;
                     }
@@ -74,9 +64,7 @@ public class VMController {
     private int getMenuSelection() {
         return view.mainMenuAndSelection();
     }
-    
-    
-    
+
     /**
      * Display banner for invalid menu choices
      */
