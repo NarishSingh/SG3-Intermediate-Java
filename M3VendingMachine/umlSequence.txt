@@ -1,0 +1,45 @@
+@startuml
+title Vending Machine - stockMachine() Sequence
+
+Controller -> View : getNewItemInfo()
+View --> Controller: Item
+
+Controller -> Service: stockItem()
+Service --> Service : validate Item
+Service -> DAO : addItem()
+DAO --> Service : Item
+
+Service -> AuditDAO : writeAuditEntry()
+AuditDAO --> Service : void
+Service --> Controller : void
+
+Controller -> View : displayStockItemSuccessBanner()
+View --> Controller : void
+
+@enduml
+
+/*----------------------------------------------------*/
+
+@startuml
+title Vending Machine - buyItem() Sequence
+
+Controller -> View : getCash()
+View --> Controller : BigDecimal
+
+Controller -> Service : buyItem()
+Service --> Service : validates cash input
+Service -> DAO : buyItem()
+DAO --> DAO : removeItem()
+DAO --> DAO : calculateChange()
+DAO --> Service : Map<Coins, Integer>
+Service --> Service : validate changeBack HashMap
+Service --> Controller : Map<Coins, Integer>
+
+Service -> AuditDAO : writeAuditEntry()
+AuditDAO --> Service : void
+Service --> Controller : void
+
+Controller -> View : DisplayBuyChangeBackSuccess()
+View --> Controller : void
+
+@enduml
