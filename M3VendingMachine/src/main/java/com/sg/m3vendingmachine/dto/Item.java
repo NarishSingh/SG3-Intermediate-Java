@@ -8,14 +8,13 @@ import java.math.BigDecimal;
 public class Item {
 
     /*fields*/
+//    private final ItemType type;
     private String name;
-    private int itemID = 0;
     private BigDecimal cost;
 
     /*ctor*/
     public Item(String name, BigDecimal cost) {
         this.name = name;
-        this.itemID = itemID++;
         this.cost = cost;
     }
 
@@ -35,12 +34,5 @@ public class Item {
     public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
-    
-    /*read-only*/
-    public int getItemID() {
-        return itemID;
-    }
-
-    //TODO override the test methods
 
 }
