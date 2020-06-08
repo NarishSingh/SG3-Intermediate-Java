@@ -1,6 +1,8 @@
 package com.sg.m3vendingmachine.controller;
 
-import com.sg.m3vendingmachine.dao.VendingDAOException;
+import com.sg.m3vendingmachine.dao.VendingPersistenceException;
+import com.sg.m3vendingmachine.dto.Item;
+import com.sg.m3vendingmachine.service.ItemDataValidationException;
 import com.sg.m3vendingmachine.service.VMService;
 import com.sg.m3vendingmachine.view.VMView;
 
@@ -34,7 +36,7 @@ public class VMController {
                         }
                         break;
                     }
-                    case 2: { //TODO for admin, have a password validation
+                    case 2: {
                         while (stocking) {
                             //stock machine
                         }
@@ -51,7 +53,7 @@ public class VMController {
 
             }
             exitMessage();
-        } catch (VendingDAOException e) {
+        } catch (VendingPersistenceException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
@@ -63,6 +65,25 @@ public class VMController {
      */
     private int getMenuSelection() {
         return view.mainMenuAndSelection();
+    }
+
+    /**
+     * Stock the vending machine with merchandise to sell
+     */
+    private void stockMachine() throws VendingPersistenceException {
+        view.displayStockMachineBanner();
+        boolean hasErrors = false;
+
+        do {
+            Item newItem = view.getNewItemInfo();
+            //service create item
+            try {
+
+            } catch (ItemDataValidationException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
     /**
