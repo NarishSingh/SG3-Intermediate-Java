@@ -1,5 +1,9 @@
 package com.sg.m3vendingmachine.view;
 
+import com.sg.m3vendingmachine.dao.VendingPersistenceException;
+import com.sg.m3vendingmachine.dto.Item;
+import java.math.BigDecimal;
+
 public class VMView {
 
     UserIO io;
@@ -46,6 +50,14 @@ public class VMView {
      */
     public void displayStockMachineBanner() {
         io.print("===STOCK MACHINE===");
+    }
+    
+    public Item getNewItemInfo() {
+        String itemName = io.readString("Please enter item name: ");
+        BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: "));
+        Item newItem = new Item(itemName, itemCost);
+        
+        return newItem;
     }
 
     /*EXIT*/
