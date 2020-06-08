@@ -7,12 +7,34 @@ import java.util.List;
 public interface VMDAO {
     
     /*snack/drink specific*/
-    void addItem(Item snackDrink, int quantity) throws VendingDAOException;
+    /**
+     * 
+     * @param snackDrink
+     * @throws VendingPersistenceException 
+     */
+    void addItem(Item snackDrink) throws VendingPersistenceException;
     
-    void removeItem(Item snackDrink, int quantity) throws VendingDAOException;
+    /**
+     * 
+     * @param snackDrink
+     * @throws VendingPersistenceException 
+     */
+    void removeItem(Item snackDrink) throws VendingPersistenceException;
     
-    List<Item> getInventory() throws VendingDAOException;
+    /**
+     * 
+     * @return
+     * @throws VendingPersistenceException 
+     */
+    List<Item> getInventory() throws VendingPersistenceException;
     
-    Item dispenseItemChange(Item snackDrink, BigDecimal userCashIn) throws VendingDAOException;
+    /**
+     * 
+     * @param snackDrink
+     * @param userCashIn
+     * @return
+     * @throws VendingPersistenceException 
+     */
+    Item dispenseItemChange(Item snackDrink, BigDecimal userCashIn) throws VendingPersistenceException;
     
 }
