@@ -41,14 +41,14 @@ public class Change {
 
     /*behaviors*/
     /**
-     * Figure out how much change is in machine based on total Change
+     * Figure out how much change to dispense, and set changeBack field
+     * accordingly
      */
     private void calculateChange(Item buying) {
         BigDecimal price = buying.getCost();
         BigDecimal change = this.getCashIn().subtract(price);
         Map<Coins, Integer> changeCoins = new HashMap<>();
 
-        //TODO convert to coins
         int quarterCt = change.divide(QUARTER_VALUE, 0, RoundingMode.HALF_UP).intValue();
         changeCoins.put(Coins.QUARTERS, quarterCt);
         BigDecimal changeAfterQuarters = change.subtract(QUARTER_VALUE.multiply(new BigDecimal(String.valueOf(quarterCt))));
@@ -60,7 +60,7 @@ public class Change {
         int nickelCt = changeAfterDimes.divide(NICKEL_VALUE, 0, RoundingMode.HALF_UP).intValue();
         changeCoins.put(Coins.NICKELS, nickelCt);
         BigDecimal changeAfterNickels = changeAfterDimes.subtract(NICKEL_VALUE.multiply(new BigDecimal(String.valueOf(nickelCt))));
-        
+
         int pennyCt = changeAfterNickels.divide(PENNY_VALUE, 0, RoundingMode.HALF_UP).intValue();
         changeCoins.put(Coins.PENNIES, pennyCt);
 
