@@ -37,9 +37,7 @@ public class VMController {
                         break;
                     }
                     case 2: {
-                        while (stocking) {
-                            //stock machine
-                        }
+                        stockMachine();
                         break;
                     }
                     case 0: {
@@ -76,9 +74,11 @@ public class VMController {
 
         do {
             Item newItem = view.getNewItemInfo();
-            //service create item
-            try {
 
+            try {
+                service.stockItem(newItem);
+                view.displayStockMachineSuccessBanner();
+                hasErrors = false;
             } catch (ItemDataValidationException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());

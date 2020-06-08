@@ -1,15 +1,15 @@
 package com.sg.m3vendingmachine.view;
 
-import com.sg.m3vendingmachine.dao.VendingPersistenceException;
 import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class VMView {
 
     UserIO io;
 
-    public VMView() {
-        this.io = new UserIOImpl();
+    public VMView(UserIO io) {
+        this.io = io;
     }
 
     /**
@@ -19,10 +19,8 @@ public class VMView {
      */
     public int mainMenuAndSelection() {
         io.print("***THE VENDING MACHINE***");
-        io.print("---User---");
         io.print("1 | Buy");
-        io.print("---Admin---");
-        io.print("2 | Stock Machine");
+        io.print("2 | Stock Machine -Admin-");
         io.print("0 | Exit");
 
         return io.readInt("Enter Action", 0, 2);
@@ -46,18 +44,31 @@ public class VMView {
 
     /*STOCKING MACHINE*/
     /**
-     * Display Stock Machine banner for UI
+     * Display opening Stock Machine banner for UI
      */
     public void displayStockMachineBanner() {
         io.print("===STOCK MACHINE===");
     }
-    
+
+    /**
+     * Get the name and cost for constructing a new consumable to be stocked
+     * into the vending machine
+     *
+     * @return {Item} new consumable that can be purchased
+     */
     public Item getNewItemInfo() {
         String itemName = io.readString("Please enter item name: ");
         BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: "));
-        Item newItem = new Item(itemName, itemCost);
-        
-        return newItem;
+        itemCost.setScale(2, RoundingMode.HALF_UP);
+
+        return new Item(itemName, itemCost);
+    }
+    
+    /**
+     * Display closing Stock Machine banner for UI if item successfully stock
+     */
+    public void displayStockMachineSuccessBanner(){
+        io.readString("Item stocked in vending machine. Press Enter to continue");
     }
 
     /*EXIT*/
