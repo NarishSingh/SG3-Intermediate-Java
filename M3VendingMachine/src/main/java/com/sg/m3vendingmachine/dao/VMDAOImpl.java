@@ -1,16 +1,10 @@
 package com.sg.m3vendingmachine.dao;
 
+import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class VMDAOImpl implements VMDAO {
 
@@ -32,22 +26,28 @@ public class VMDAOImpl implements VMDAO {
     /*INTERFACE IMPL*/
     @Override
     public void addItem(Item snackDrink) throws VendingPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        loadInventory();
+        inventory.add(snackDrink);
+        writeInventory();
     }
 
     @Override
     public void removeItem(Item snackDrink) throws VendingPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        loadInventory();
+        inventory.remove(snackDrink);
+        writeInventory();
     }
 
     @Override
     public List<Item> getInventory() throws VendingPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        loadInventory();
+        return inventory;
     }
 
     @Override
-    public Item dispenseItemChange(Item snackDrink, BigDecimal userCashIn) throws VendingPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Map<Coins, Integer> dispenseItemChange(Item snackDrink, BigDecimal userCashIn)
+            throws VendingPersistenceException {
+        return Change.calculateChange(snackDrink, userCashIn);
     }
 
     /*DATA (UN)MARSHALLING*/
@@ -125,22 +125,21 @@ public class VMDAOImpl implements VMDAO {
         }
 
         String itemAsText;
-        
+
         for (Item item : inventory) {
             itemAsText = marshallItem(item);
-                    out.println(itemAsText);
-                    out.flush();
+            out.println(itemAsText);
+            out.flush();
         }
 
         /*
         inventory.stream()
-                .forEach(Item -> {
-                    itemAsText = marshallItem(Item); //FIXME what does this mean
+                .forEach((item) -> {
+                    itemAsText = marshallItem(item); //FIXME what does this mean
                     out.println(itemAsText);
                     out.flush();
                 });
-                */
-
+         */
         out.close();
     }
 }

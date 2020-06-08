@@ -20,15 +20,15 @@ public class Change {
     private static final BigDecimal QUARTER_VALUE = new BigDecimal("0.25");
 
     /*ctor*/
-    /*
+ /*
     public Change(BigDecimal cashIn) {
         changeBack = new HashMap<>();
         this.cashIn = cashIn;
     }
-    */
+     */
 
-    /*getter/setters*/
-    /*
+ /*getter/setters*/
+ /*
     public Map<Coins, Integer> getChangeBack() {
         return changeBack;
     }
@@ -39,18 +39,21 @@ public class Change {
     /*
 
     /*read-only*/
-    /*
+ /*
     public BigDecimal getCashIn() {
         return cashIn;
     }
-    */
+     */
 
     /*behaviors*/
     /**
-     * Figure out how much change to dispense, and set changeBack field
-     * accordingly
+     * Figure out how much change to dispense
+     *
+     * @param cashIn {BigDecimal} cash inputted by user
+     * @param buying {Item} the consumable the user intends to buy
+     * @return {Map} a HashMap of change in coins to be dispensed to the user
      */
-    private Map<Coins, Integer> calculateChange(BigDecimal cashIn, Item buying) {
+    static public Map<Coins, Integer> calculateChange(Item buying, BigDecimal cashIn) {
         BigDecimal price = buying.getCost();
 //        BigDecimal change = this.getCashIn().subtract(price);
         BigDecimal change = cashIn.subtract(price);
@@ -72,7 +75,6 @@ public class Change {
         changeCoins.put(Coins.PENNIES, pennyCt);
 
 //        this.setChangeBack(changeCoins);
-        
         return changeCoins;
     }
 }

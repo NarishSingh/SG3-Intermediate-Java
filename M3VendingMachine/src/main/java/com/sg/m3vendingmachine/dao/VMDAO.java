@@ -1,40 +1,50 @@
 package com.sg.m3vendingmachine.dao;
 
+import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface VMDAO {
-    
+
     /*snack/drink specific*/
     /**
-     * 
-     * @param snackDrink
-     * @throws VendingPersistenceException 
+     * Add an item to the inventory
+     *
+     * @param snackDrink {Item} new consumable that user can purchase
+     * @throws VendingPersistenceException if cannot write to inventory file
      */
     void addItem(Item snackDrink) throws VendingPersistenceException;
-    
+
     /**
-     * 
-     * @param snackDrink
-     * @throws VendingPersistenceException 
+     * Remove an item from inventory when bought by user
+     *
+     * @param snackDrink {Item} an existing consumable that was bought and needs
+     *                   to be removed from inventory
+     * @throws VendingPersistenceException if cannot read in or write to file
      */
     void removeItem(Item snackDrink) throws VendingPersistenceException;
-    
+
     /**
-     * 
-     * @return
-     * @throws VendingPersistenceException 
+     * Get all existing items in inventory
+     *
+     * @return {List} all Items will be returned in an ArrayList
+     * @throws VendingPersistenceException if cannot read from inventory file
      */
     List<Item> getInventory() throws VendingPersistenceException;
-    
+
     /**
-     * 
-     * @param snackDrink
-     * @param userCashIn
-     * @return
-     * @throws VendingPersistenceException 
+     * Dispense the proper change when an item is purchased/removed from
+     * inventory
+     *
+     * @param snackDrink {Item} the item that was bought
+     * @param userCashIn {BigDecimal} the total cash amount entered by the user
+     * @return Map of the coins to be dispensed to the user after the full
+     *         transaction
+     * @throws VendingPersistenceException if cannot read from to file
      */
-    Item dispenseItemChange(Item snackDrink, BigDecimal userCashIn) throws VendingPersistenceException;
-    
+    Map<Coins, Integer> dispenseItemChange(Item snackDrink, BigDecimal userCashIn)
+            throws VendingPersistenceException;
+
 }
