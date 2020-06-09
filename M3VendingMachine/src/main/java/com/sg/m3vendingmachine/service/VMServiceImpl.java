@@ -29,19 +29,30 @@ public class VMServiceImpl implements VMService {
     }
 
     @Override
-    public List<Item> getInventory() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Item> getInventory() throws VendingPersistenceException {
+        return dao.getInventory();
     }
 
     @Override
-    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) throws NoItemInventoryException, InsufficientFundsException {
+    public Item getItem(String itemName) throws VendingPersistenceException, NoSuchItemExistsException {
+        try {
+            return dao.getItem(itemName);
+        } catch (NoSuchItemExistsException e) {
+            throw new NoSuchItemExistsException("No such item in inventory", e);
+        }
+
+    }
+
+    @Override
+    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) throws NoSuchItemExistsException, InsufficientFundsException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
      * Validate that a new item has a valid name and price above 0
+     *
      * @param item {Item} an item constructed from view
-     * @throws ItemDataValidationException 
+     * @throws ItemDataValidationException
      */
     private void validateNewItemData(Item item) throws ItemDataValidationException {
         if (item.getName() == null

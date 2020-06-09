@@ -22,9 +22,12 @@ public interface VMService {
      * Return the current inventory
      *
      * @return {List} all items available for purchase
+     * @throws VendingPersistenceException if cannot read from inventory file
      */
-    List<Item> getInventory();
+    List<Item> getInventory() throws VendingPersistenceException;
 
+    Item getItem(String itemName) throws VendingPersistenceException, NoSuchItemExistsException;
+    
     /**
      * Sell an existing item from inventory, removing it, and returning the
      * proper change

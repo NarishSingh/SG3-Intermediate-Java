@@ -3,8 +3,11 @@ package com.sg.m3vendingmachine.controller;
 import com.sg.m3vendingmachine.dao.VendingPersistenceException;
 import com.sg.m3vendingmachine.dto.Item;
 import com.sg.m3vendingmachine.service.ItemDataValidationException;
+import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import com.sg.m3vendingmachine.service.VMService;
 import com.sg.m3vendingmachine.view.VMView;
+import java.math.BigDecimal;
+import java.util.List;
 
 public class VMController {
 
@@ -21,8 +24,8 @@ public class VMController {
      */
     public void run() {
         boolean inProgram = true;
+        //TODO consider buying and stocking loops for conveniance
         boolean buying = true;
-//        boolean buyingByType = true;
         boolean stocking = true;
 
         try {
@@ -31,9 +34,7 @@ public class VMController {
 
                 switch (menuSelection) {
                     case 1: {
-                        while (buying) {
-                            //buy
-                        }
+                        //buy
                         break;
                     }
                     case 2: {
@@ -63,6 +64,44 @@ public class VMController {
      */
     private int getMenuSelection() {
         return view.mainMenuAndSelection();
+    }
+
+    /**
+     * Display all consumables, get cash and item choice inputs, validate, and
+     * finally dispense item and exact change
+     */
+    private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException {
+        view.displayBuyBanner();
+
+        List<Item> inventory = service.getInventory();
+        view.displayInventory(inventory);
+
+        BigDecimal cashIn = view.getCash();
+
+        boolean hasErrors = false;
+
+        do {
+            String itemToBuyString = view.getUserBuySelection();
+
+            try {
+                Item itemToBuy = service.getItem(itemToBuyString);
+                hasErrors = false;
+            } catch (NoSuchItemExistsException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
+        
+        
+
+        //TODO need to allow user to select an item, return string to be validated in service
+        /*
+        TODO need to buyItem
+        -need to validate the cash and string inputs, throwing errors
+        -remove item
+        -calculate change
+        -write to audit file
+         */
     }
 
     /**

@@ -7,12 +7,12 @@ package com.sg.m3vendingmachine.service;
  *
  * @author naris
  */
-public class NoItemInventoryException extends Exception {
-    public NoItemInventoryException(String msg){
+public class NoSuchItemExistsException extends Exception {
+    public NoSuchItemExistsException(String msg){
         super(msg);
     }
     
-    public NoItemInventoryException(String msg, Throwable cause){
+    public NoSuchItemExistsException(String msg, Throwable cause){
         super(msg, cause);
     }
 }
