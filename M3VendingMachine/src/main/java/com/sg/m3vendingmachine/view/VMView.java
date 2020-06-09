@@ -3,6 +3,7 @@ package com.sg.m3vendingmachine.view;
 import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 public class VMView {
 
@@ -34,13 +35,45 @@ public class VMView {
         io.print("===BUY===");
     }
 
-    /*BUY BY TYPE*/
     /**
-     * Display Buy By Snack/Drink Type banner for UI
+     * Print inventory to UI
+     *
+     * @param allItems {List} all items in inventory
      */
-//    public void displayBuyByTypeBanner() {
-//        io.print("===BUY BY SNACK/DRINK TYPE===");
-//    }
+    public void displayInventory(List<Item> allItems) {
+        if (allItems.isEmpty()) {
+            io.print("No items in inventory.");
+        } else {
+            io.print("---*---");
+
+            allItems.stream()
+                    .forEach((item) -> {
+                        io.print(item.getName() + " | $" + item.getCost());
+                    });
+
+            io.print("-------");
+        }
+    }
+
+    /**
+     * Get cash from user
+     *
+     * @return {BigDecimal} cash amount
+     */
+    public BigDecimal getCash() {
+        BigDecimal cash = new BigDecimal(io.readString("Enter cash amount: $"));
+        cash.setScale(2, RoundingMode.HALF_UP);
+
+        return cash;
+    }
+    
+    /**
+     * Prompt user to enter the item they want to buy
+     * @return {String} a string of what the user wants to buy
+     */
+    public String getUserBuySelection(){
+        return io.readString("Please enter name of product to buy: ");
+    }
 
     /*STOCKING MACHINE*/
     /**
@@ -58,16 +91,16 @@ public class VMView {
      */
     public Item getNewItemInfo() {
         String itemName = io.readString("Please enter item name: ");
-        BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: "));
+        BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: $"));
         itemCost.setScale(2, RoundingMode.HALF_UP);
 
         return new Item(itemName, itemCost);
     }
-    
+
     /**
      * Display closing Stock Machine banner for UI if item successfully stock
      */
-    public void displayStockMachineSuccessBanner(){
+    public void displayStockMachineSuccessBanner() {
         io.readString("Item stocked in vending machine. Press Enter to continue");
     }
 
