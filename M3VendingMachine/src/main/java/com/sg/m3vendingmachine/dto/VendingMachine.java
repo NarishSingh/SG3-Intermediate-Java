@@ -10,6 +10,7 @@ public class VendingMachine {
 
     /*fields*/
     private List<Item> inventory;
+    private int inventoryCount;
 
     /*ctor*/
     public VendingMachine() {
@@ -29,4 +30,24 @@ public class VendingMachine {
         this.inventory = inventory;
     }
 
+    public int getInventoryCount() {
+        return inventoryCount;
+    }
+
+    public void setInventoryCount(int inventoryCount) {
+        this.inventoryCount = inventoryCount;
+    }
+
+    /*Behaviors*/
+    /**
+     * Tally items in inventory and set inventoryCount
+     */
+    private void totalInventory() {
+        Long itemCtLong = inventory.stream()
+                .count();
+
+        int itemCount = itemCtLong.intValue();
+
+        this.setInventoryCount(inventoryCount);
+    }
 }
