@@ -2,6 +2,7 @@ package com.sg.m3vendingmachine.dao;
 
 import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
+import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,16 @@ public interface VMDAO {
      * @throws VendingPersistenceException if cannot read in or write to file
      */
     void removeItem(Item snackDrink) throws VendingPersistenceException;
+
+    /**
+     * Validate that an item exists in inventory
+     *
+     * @param itemName {String} user's input
+     * @return {Item} the item that corresponds with the param
+     * @throws VendingPersistenceException if cannot read from inventory file
+     * @throws NoSuchItemExistsException if cannot find item in inventory
+     */
+    Item getItem(String itemName) throws VendingPersistenceException, NoSuchItemExistsException;
 
     /**
      * Get all existing items in inventory

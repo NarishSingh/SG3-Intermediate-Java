@@ -2,9 +2,11 @@ package com.sg.m3vendingmachine.dao;
 
 import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
+import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class VMDAOImpl implements VMDAO {
 
@@ -36,6 +38,22 @@ public class VMDAOImpl implements VMDAO {
         loadInventory();
         inventory.remove(snackDrink);
         writeInventory();
+    }
+
+    @Override
+    public Item getItem(String itemName) throws VendingPersistenceException, 
+            NoSuchItemExistsException {
+        loadInventory();
+        List<Item> matchingItems = inventory.stream()
+               .filter((item) -> item.getName().equals(itemName))
+               .collect(Collectors.toList());
+        
+        if (matchingItems.isEmpty()) {
+            throw new NoSuchItemExistsException("No such item in inventory");
+        } else {
+            return matchingItems.get(0);
+        }
+        
     }
 
     @Override
@@ -124,22 +142,20 @@ public class VMDAOImpl implements VMDAO {
             throw new VendingPersistenceException("Could not write to inventory file", e);
         }
 
-        String itemAsText;
-
+        /*
         for (Item item : inventory) {
             itemAsText = marshallItem(item);
             out.println(itemAsText);
             out.flush();
-        }
-
-        /*
-        inventory.stream()
+       }
+         */
+        getInventory().stream()
                 .forEach((item) -> {
-                    itemAsText = marshallItem(item); //FIXME what does this mean
+                    String itemAsText = marshallItem(item);
                     out.println(itemAsText);
                     out.flush();
                 });
-         */
+
         out.close();
     }
 }
