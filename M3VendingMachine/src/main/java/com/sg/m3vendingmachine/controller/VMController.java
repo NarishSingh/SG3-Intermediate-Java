@@ -24,12 +24,17 @@ public class VMController {
 
     /**
      * App controller
+     *
+     * @throws NoSuchItemExistsException  if user tries to buy a non-existent
+     *                                    item
+     * @throws InsufficientFundsException if user enters an insufficient amount
+     *                                    of money
      */
-    public void run() {
+    public void run() throws NoSuchItemExistsException, InsufficientFundsException {
         boolean inProgram = true;
         //TODO consider buying and stocking loops for conveniance
-        boolean buying = true;
-        boolean stocking = true;
+//        boolean buying = true;
+//        boolean stocking = true;
 
         try {
             while (inProgram) {
@@ -37,7 +42,7 @@ public class VMController {
 
                 switch (menuSelection) {
                     case 1: {
-                        //buy
+                        buyItem();
                         break;
                     }
                     case 2: {
@@ -83,7 +88,6 @@ public class VMController {
 
         boolean hasErrors = false;
         Item itemToBuy = null;
-
         do {
             String itemToBuyString = view.getUserBuySelection();
 
@@ -96,16 +100,23 @@ public class VMController {
             }
         } while (hasErrors || itemToBuy == null);
 
-        Map<Coins, Integer> usersChange = service.sellItem(itemToBuy, cashIn);
+        hasErrors = false;
+        do {
+            try {
+                Map<Coins, Integer> usersChange = service.sellItem(itemToBuy, cashIn);
 
-        /*
-        TODO need to sellItem
-        -remove item
-        -change
-        --calculate change if successful
-        --re-prompt to enter more money if unsuccessful, calculate change
-        -write to audit file
-         */
+                if (usersChange.isEmpty()) {
+                    view.displayPurchaseNoChangeBanner(itemToBuy);
+                } else {
+                    view.displayPurchaseWithChange(itemToBuy, usersChange);
+                }
+
+                hasErrors = false;
+            } catch (InsufficientFundsException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
     }
 
     /**

@@ -238,7 +238,7 @@ Controller -> Service : validate with getItem()
 Controller -> Service : sellItem(Item, BigDecimal)
 Service -> DAO : buyItem()
 DAO --> DAO : removeItem()
-DAO --> DAO : calculateChange()
+DAO --> DAO : dispenseItemChange()
 DAO --> Service : Map<Coins, Integer>
 Service --> Controller : Map<Coins, Integer>
 

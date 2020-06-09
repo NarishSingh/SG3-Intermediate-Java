@@ -2,6 +2,7 @@ package com.sg.m3vendingmachine.dao;
 
 import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
+import com.sg.m3vendingmachine.service.InsufficientFundsException;
 import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import java.io.*;
 import java.math.BigDecimal;
@@ -41,19 +42,19 @@ public class VMDAOImpl implements VMDAO {
     }
 
     @Override
-    public Item getItem(String itemName) throws VendingPersistenceException, 
+    public Item getItem(String itemName) throws VendingPersistenceException,
             NoSuchItemExistsException {
         loadInventory();
         List<Item> matchingItems = inventory.stream()
-               .filter((item) -> item.getName().equals(itemName))
-               .collect(Collectors.toList());
-        
+                .filter((item) -> item.getName().equals(itemName))
+                .collect(Collectors.toList());
+
         if (matchingItems.isEmpty()) {
             throw new NoSuchItemExistsException("No such item in inventory");
         } else {
             return matchingItems.get(0);
         }
-        
+
     }
 
     @Override
@@ -64,18 +65,22 @@ public class VMDAOImpl implements VMDAO {
 
     @Override
     public Map<Coins, Integer> dispenseItemChange(Item snackDrink, BigDecimal userCashIn)
-            throws VendingPersistenceException {
-        return Change.calculateChange(snackDrink, userCashIn);
+            throws InsufficientFundsException {
+        try {
+            return Change.calculateChange(snackDrink, userCashIn);
+        } catch (InsufficientFundsException e) {
+            throw new InsufficientFundsException("Not enough cash to purchase item");
+        }
     }
-    
+
     @Override
-    public int inventoryCount() throws VendingPersistenceException{
+    public int inventoryCount() throws VendingPersistenceException {
         loadInventory();
-        
+
         Long itemCtLong = inventory.stream()
                 .count();
 
-       return itemCtLong.intValue();
+        return itemCtLong.intValue();
     }
 
     /*DATA (UN)MARSHALLING*/

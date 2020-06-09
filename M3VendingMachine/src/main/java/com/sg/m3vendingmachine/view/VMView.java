@@ -1,9 +1,11 @@
 package com.sg.m3vendingmachine.view;
 
+import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 
 public class VMView {
 
@@ -66,13 +68,38 @@ public class VMView {
 
         return cash;
     }
-    
+
     /**
      * Prompt user to enter the item they want to buy
+     *
      * @return {String} a string of what the user wants to buy
      */
-    public String getUserBuySelection(){
+    public String getUserBuySelection() {
         return io.readString("Please enter name of product to buy: ");
+    }
+
+    /**
+     * Confirm purchase with no change back
+     *
+     * @param bought {Item} the purchased item
+     */
+    public void displayPurchaseNoChangeBanner(Item bought) {
+        io.print("Here is your " + bought.getName());
+        io.readString("Press ENTER to continue");
+    }
+
+    /**
+     * Confirm a purchase, and print change back for user
+     * @param bought {Item} the purchased item
+     * @param change {Map} change in the form of coins
+     */
+    public void displayPurchaseWithChange(Item bought, Map<Coins, Integer> change) {
+        io.print("Here is your " + bought.getName());
+        io.print("Your change:");
+
+        change.forEach((coin, number) -> System.out.println(number + " " + coin.toString()));
+
+        io.readString("Press ENTER to continue");
     }
 
     /*STOCKING MACHINE*/
@@ -99,6 +126,7 @@ public class VMView {
 
     /**
      * Display closing Stock Machine banner for UI if item successfully stock
+     *
      * @param totalItems {int} total items in inventory
      */
     public void displayStockMachineSuccessBanner(int totalItems) {
@@ -106,7 +134,7 @@ public class VMView {
         io.print(totalItems + " items in stock");
         io.readString("Press Enter to continue");
     }
-    
+
     /*EXIT*/
     /**
      * Display Exit banner in UI

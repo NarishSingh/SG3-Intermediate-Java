@@ -2,6 +2,7 @@ package com.sg.m3vendingmachine.dao;
 
 import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
+import com.sg.m3vendingmachine.service.InsufficientFundsException;
 import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -53,10 +54,11 @@ public interface VMDAO {
      * @param userCashIn {BigDecimal} the total cash amount entered by the user
      * @return Map of the coins to be dispensed to the user after the full
      *         transaction
-     * @throws VendingPersistenceException if cannot read from to file
+     * @throws InsufficientFundsException if not enough money was entered for
+     *                                    transaction
      */
     Map<Coins, Integer> dispenseItemChange(Item snackDrink, BigDecimal userCashIn)
-            throws VendingPersistenceException;
+            throws InsufficientFundsException;
 
     /**
      * Tally items in inventory

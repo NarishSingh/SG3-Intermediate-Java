@@ -26,6 +26,15 @@ public interface VMService {
      */
     List<Item> getInventory() throws VendingPersistenceException;
 
+    /**
+     * Get an item from inventory
+     *
+     * @param itemName {String} name of item that user wants to buy
+     * @return {Item} the item that corresponds with the name inputted
+     * @throws VendingPersistenceException if cannot read from inventory file
+     * @throws NoSuchItemExistsException   if no item exists matching the name
+     *                                     inputted by user
+     */
     Item getItem(String itemName) throws VendingPersistenceException, NoSuchItemExistsException;
 
     /**
@@ -35,11 +44,13 @@ public interface VMService {
      * @param snackDrink {Item} the item to be sold
      * @param userCashIn {BigDecimal} cash inputted by user
      * @return {Map} change for the user as a HashMap of coins
-     * @throws InsufficientFundsException if user has not inputted enough money
-     *                                    into the vending machine
+     * @throws VendingPersistenceException if cannot read from or write to
+     *                                     inventory file
+     * @throws InsufficientFundsException  if user has not inputted enough money
+     *                                     into the vending machine
      */
     Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn)
-            throws InsufficientFundsException;
+            throws VendingPersistenceException, InsufficientFundsException;
 
     /**
      * Tally items in inventory
