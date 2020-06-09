@@ -1,13 +1,16 @@
 package com.sg.m3vendingmachine.controller;
 
 import com.sg.m3vendingmachine.dao.VendingPersistenceException;
+import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
+import com.sg.m3vendingmachine.service.InsufficientFundsException;
 import com.sg.m3vendingmachine.service.ItemDataValidationException;
 import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import com.sg.m3vendingmachine.service.VMService;
 import com.sg.m3vendingmachine.view.VMView;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class VMController {
 
@@ -70,7 +73,7 @@ public class VMController {
      * Display all consumables, get cash and item choice inputs, validate, and
      * finally dispense item and exact change
      */
-    private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException {
+    private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException, InsufficientFundsException {
         view.displayBuyBanner();
 
         List<Item> inventory = service.getInventory();
@@ -79,27 +82,28 @@ public class VMController {
         BigDecimal cashIn = view.getCash();
 
         boolean hasErrors = false;
+        Item itemToBuy = null;
 
         do {
             String itemToBuyString = view.getUserBuySelection();
 
             try {
-                Item itemToBuy = service.getItem(itemToBuyString);
+                itemToBuy = service.getItem(itemToBuyString);
                 hasErrors = false;
             } catch (NoSuchItemExistsException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
             }
-        } while (hasErrors);
-        
-        
+        } while (hasErrors || itemToBuy == null);
 
-        //TODO need to allow user to select an item, return string to be validated in service
+        Map<Coins, Integer> usersChange = service.sellItem(itemToBuy, cashIn);
+
         /*
-        TODO need to buyItem
-        -need to validate the cash and string inputs, throwing errors
+        TODO need to sellItem
         -remove item
-        -calculate change
+        -change
+        --calculate change if successful
+        --re-prompt to enter more money if unsuccessful, calculate change
         -write to audit file
          */
     }
@@ -116,7 +120,8 @@ public class VMController {
 
             try {
                 service.stockItem(newItem);
-                view.displayStockMachineSuccessBanner();
+                int itemCount = service.inventoryCount();
+                view.displayStockMachineSuccessBanner(itemCount);
                 hasErrors = false;
             } catch (ItemDataValidationException e) {
                 hasErrors = true;

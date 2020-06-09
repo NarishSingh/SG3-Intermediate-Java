@@ -67,6 +67,16 @@ public class VMDAOImpl implements VMDAO {
             throws VendingPersistenceException {
         return Change.calculateChange(snackDrink, userCashIn);
     }
+    
+    @Override
+    public int inventoryCount() throws VendingPersistenceException{
+        loadInventory();
+        
+        Long itemCtLong = inventory.stream()
+                .count();
+
+       return itemCtLong.intValue();
+    }
 
     /*DATA (UN)MARSHALLING*/
     /**

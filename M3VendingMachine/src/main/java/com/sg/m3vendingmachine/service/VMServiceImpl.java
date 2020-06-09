@@ -44,9 +44,15 @@ public class VMServiceImpl implements VMService {
     }
 
     @Override
-    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) throws NoSuchItemExistsException, InsufficientFundsException {
+    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) throws InsufficientFundsException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+    public int inventoryCount() throws VendingPersistenceException{
+        return dao.inventoryCount();
+    }
+
 
     /**
      * Validate that a new item has a valid name and price above 0

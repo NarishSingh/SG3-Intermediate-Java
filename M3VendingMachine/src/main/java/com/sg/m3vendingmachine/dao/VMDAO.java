@@ -33,7 +33,7 @@ public interface VMDAO {
      * @param itemName {String} user's input
      * @return {Item} the item that corresponds with the param
      * @throws VendingPersistenceException if cannot read from inventory file
-     * @throws NoSuchItemExistsException if cannot find item in inventory
+     * @throws NoSuchItemExistsException   if cannot find item in inventory
      */
     Item getItem(String itemName) throws VendingPersistenceException, NoSuchItemExistsException;
 
@@ -58,4 +58,11 @@ public interface VMDAO {
     Map<Coins, Integer> dispenseItemChange(Item snackDrink, BigDecimal userCashIn)
             throws VendingPersistenceException;
 
+    /**
+     * Tally items in inventory
+     *
+     * @return {int} number of items in stock
+     * @throws VendingPersistenceException if cannot read from inventory file
+     */
+    int inventoryCount() throws VendingPersistenceException;
 }

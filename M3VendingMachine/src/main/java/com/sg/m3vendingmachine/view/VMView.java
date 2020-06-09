@@ -99,11 +99,14 @@ public class VMView {
 
     /**
      * Display closing Stock Machine banner for UI if item successfully stock
+     * @param totalItems {int} total items in inventory
      */
-    public void displayStockMachineSuccessBanner() {
-        io.readString("Item stocked in vending machine. Press Enter to continue");
+    public void displayStockMachineSuccessBanner(int totalItems) {
+        io.print("Item stocked in vending machine.");
+        io.print(totalItems + " items in stock");
+        io.readString("Press Enter to continue");
     }
-
+    
     /*EXIT*/
     /**
      * Display Exit banner in UI
