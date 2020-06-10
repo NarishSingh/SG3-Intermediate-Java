@@ -35,7 +35,7 @@ public class VMServiceImpl implements VMService {
     }
 
     @Override
-    public Item getItem(String itemName) throws VendingPersistenceException, 
+    public Item getItem(String itemName) throws VendingPersistenceException,
             NoSuchItemExistsException {
         try {
             return dao.getItem(itemName);
@@ -54,7 +54,7 @@ public class VMServiceImpl implements VMService {
             try {
                 auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " SOLD");
                 dao.removeItem(snackDrink);
-                
+
                 return change; //empty
             } catch (VendingPersistenceException e) {
                 throw new VendingPersistenceException("Could not load or write to inventory file");
@@ -63,9 +63,9 @@ public class VMServiceImpl implements VMService {
             //need change
             try {
                 change = dao.dispenseItemChange(snackDrink, userCashIn);
-                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " REMOVED");
+                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " SOLD");
                 dao.removeItem(snackDrink);
-                
+
                 return change;
             } catch (VendingPersistenceException e) {
                 throw new VendingPersistenceException("Could not load or write to inventory file");
