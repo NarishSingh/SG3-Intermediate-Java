@@ -35,7 +35,8 @@ public class VMServiceImpl implements VMService {
     }
 
     @Override
-    public Item getItem(String itemName) throws VendingPersistenceException, NoSuchItemExistsException {
+    public Item getItem(String itemName) throws VendingPersistenceException, 
+            NoSuchItemExistsException {
         try {
             return dao.getItem(itemName);
         } catch (NoSuchItemExistsException e) {
@@ -51,7 +52,7 @@ public class VMServiceImpl implements VMService {
         if (snackDrink.getCost().compareTo(userCashIn) == 0) {
             //exact/no change
             try {
-                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " REMOVED");
+                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " SOLD");
                 dao.removeItem(snackDrink);
                 
                 return change; //empty

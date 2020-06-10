@@ -78,14 +78,22 @@ public class VMController {
      * Display all consumables, get cash and item choice inputs, validate, and
      * finally dispense item and exact change
      */
-    private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException, InsufficientFundsException {
+    private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException,
+            InsufficientFundsException {
         view.displayBuyBanner();
 
+        //display inventory
         List<Item> inventory = service.getInventory();
         view.displayInventory(inventory);
+        
+        if (inventory.isEmpty()) {
+            return; //stop buying if nothing in stock
+        }
 
+        //user cash
         BigDecimal cashIn = view.getCash();
 
+        //get item
         boolean hasErrors = false;
         Item itemToBuy = null;
         do {
@@ -94,12 +102,13 @@ public class VMController {
             try {
                 itemToBuy = service.getItem(itemToBuyString);
                 hasErrors = false;
-            } catch (NoSuchItemExistsException e) {
+            } catch (VendingPersistenceException | NoSuchItemExistsException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
             }
-        } while (hasErrors || itemToBuy == null);
+        } while (hasErrors);
 
+        //make sale
         hasErrors = false;
         do {
             try {
@@ -115,6 +124,8 @@ public class VMController {
             } catch (InsufficientFundsException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
+
+                cashIn = cashIn.add(view.getRemainingCash());
             }
         } while (hasErrors);
     }

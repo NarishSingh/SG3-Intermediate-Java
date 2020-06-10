@@ -58,7 +58,7 @@ public class VMView {
     }
 
     /**
-     * Get cash from user
+     * Prompt user to enter cash into the vending machine
      *
      * @return {BigDecimal} cash amount
      */
@@ -79,6 +79,18 @@ public class VMView {
     }
 
     /**
+     * Prompt user to enter cash again to pay off the remaining balance
+     *
+     * @return {BigDecimal} cash amount
+     */
+    public BigDecimal getRemainingCash() {
+        BigDecimal remainingCash = new BigDecimal(io.readString("Please pay remaining balance: "));
+        remainingCash.setScale(2, RoundingMode.HALF_UP);
+
+        return remainingCash;
+    }
+
+    /**
      * Confirm purchase with no change back
      *
      * @param bought {Item} the purchased item
@@ -90,6 +102,7 @@ public class VMView {
 
     /**
      * Confirm a purchase, and print change back for user
+     *
      * @param bought {Item} the purchased item
      * @param change {Map} change in the form of coins
      */

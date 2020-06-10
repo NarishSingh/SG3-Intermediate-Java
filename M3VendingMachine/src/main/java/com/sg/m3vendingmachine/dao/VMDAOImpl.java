@@ -1,3 +1,12 @@
+/*
+FIXME
+-auditDAO is functioning fine
+-when adding items, the item is multipling, this is register as early as right 
+after the add and the counting of inventory which is accurately showing the multiplication glitch
+-there was a case of the calculate change thing returning -1 nickels
+-when under the amount to buy something, program goes into infinite loop saying
+can't buy item
+*/
 package com.sg.m3vendingmachine.dao;
 
 import com.sg.m3vendingmachine.dto.Coins;
@@ -36,7 +45,6 @@ public class VMDAOImpl implements VMDAO {
 
     @Override
     public void removeItem(Item snackDrink) throws VendingPersistenceException {
-        loadInventory();
         inventory.remove(snackDrink);
         writeInventory();
     }
@@ -54,7 +62,6 @@ public class VMDAOImpl implements VMDAO {
         } else {
             return matchingItems.get(0);
         }
-
     }
 
     @Override
@@ -69,7 +76,7 @@ public class VMDAOImpl implements VMDAO {
         try {
             return Change.calculateChange(snackDrink, userCashIn);
         } catch (InsufficientFundsException e) {
-            throw new InsufficientFundsException("Not enough cash to purchase item");
+            throw new InsufficientFundsException("Not enough cash to purchase item", e);
         }
     }
 
@@ -132,6 +139,7 @@ public class VMDAOImpl implements VMDAO {
 
         String currentLine;
         Item currentItem;
+        inventory.clear();
 
         while (scanner.hasNextLine()) {
             currentLine = scanner.nextLine();
@@ -153,24 +161,17 @@ public class VMDAOImpl implements VMDAO {
 
         try {
             out = new PrintWriter(new FileWriter(INVENTORY_FILE));
+
+            inventory.stream()
+                    .forEach((item) -> {
+                        String itemAsText = marshallItem(item);
+                        out.println(itemAsText);
+                        out.flush();
+                    });
+
+            out.close();
         } catch (IOException e) {
             throw new VendingPersistenceException("Could not write to inventory file", e);
         }
-
-        /*
-        for (Item item : inventory) {
-            itemAsText = marshallItem(item);
-            out.println(itemAsText);
-            out.flush();
-       }
-         */
-        getInventory().stream()
-                .forEach((item) -> {
-                    String itemAsText = marshallItem(item);
-                    out.println(itemAsText);
-                    out.flush();
-                });
-
-        out.close();
     }
 }
