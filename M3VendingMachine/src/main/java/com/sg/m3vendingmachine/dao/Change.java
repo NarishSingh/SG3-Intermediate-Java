@@ -36,19 +36,20 @@ public class Change {
         if (change.compareTo(BigDecimal.ZERO) < 0) {
             throw new InsufficientFundsException("Not enough money to buy item");
         } else {
-            int quarterCt = change.divide(QUARTER_VALUE, 0, RoundingMode.HALF_UP).intValue();
+            //RoundingMode.DOWN to simulate integer division via truncation
+            int quarterCt = change.divide(QUARTER_VALUE, 0, RoundingMode.DOWN).intValue();
             changeCoins.put(Coins.QUARTERS, quarterCt);
             BigDecimal changeAfterQuarters = change.subtract(QUARTER_VALUE.multiply(new BigDecimal(String.valueOf(quarterCt))));
 
-            int dimeCt = changeAfterQuarters.divide(DIME_VALUE, 0, RoundingMode.HALF_UP).intValue();
+            int dimeCt = changeAfterQuarters.divide(DIME_VALUE, 0, RoundingMode.DOWN).intValue();
             changeCoins.put(Coins.DIMES, dimeCt);
             BigDecimal changeAfterDimes = changeAfterQuarters.subtract(DIME_VALUE.multiply(new BigDecimal(String.valueOf(dimeCt))));
 
-            int nickelCt = changeAfterDimes.divide(NICKEL_VALUE, 0, RoundingMode.HALF_UP).intValue();
+            int nickelCt = changeAfterDimes.divide(NICKEL_VALUE, 0, RoundingMode.DOWN).intValue();
             changeCoins.put(Coins.NICKELS, nickelCt);
             BigDecimal changeAfterNickels = changeAfterDimes.subtract(NICKEL_VALUE.multiply(new BigDecimal(String.valueOf(nickelCt))));
 
-            int pennyCt = changeAfterNickels.divide(PENNY_VALUE, 0, RoundingMode.HALF_UP).intValue();
+            int pennyCt = changeAfterNickels.divide(PENNY_VALUE, 0, RoundingMode.DOWN).intValue();
             changeCoins.put(Coins.PENNIES, pennyCt);
 
             return changeCoins;

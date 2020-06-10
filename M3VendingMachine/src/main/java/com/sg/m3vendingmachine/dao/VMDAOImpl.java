@@ -1,11 +1,7 @@
 /*
 FIXME
 -auditDAO is functioning fine
--when adding items, the item is multipling, this is register as early as right 
-after the add and the counting of inventory which is accurately showing the multiplication glitch
 -there was a case of the calculate change thing returning -1 nickels
--when under the amount to buy something, program goes into infinite loop saying
-can't buy item
 */
 package com.sg.m3vendingmachine.dao;
 

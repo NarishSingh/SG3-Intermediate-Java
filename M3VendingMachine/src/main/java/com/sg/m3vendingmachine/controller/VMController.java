@@ -24,17 +24,9 @@ public class VMController {
 
     /**
      * App controller
-     *
-     * @throws NoSuchItemExistsException  if user tries to buy a non-existent
-     *                                    item
-     * @throws InsufficientFundsException if user enters an insufficient amount
-     *                                    of money
      */
-    public void run() throws NoSuchItemExistsException, InsufficientFundsException {
+    public void run() {
         boolean inProgram = true;
-        //TODO consider buying and stocking loops for conveniance
-//        boolean buying = true;
-//        boolean stocking = true;
 
         try {
             while (inProgram) {
@@ -60,7 +52,9 @@ public class VMController {
 
             }
             exitMessage();
-        } catch (VendingPersistenceException e) {
+        } catch (VendingPersistenceException
+                | NoSuchItemExistsException
+                | InsufficientFundsException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
@@ -77,6 +71,12 @@ public class VMController {
     /**
      * Display all consumables, get cash and item choice inputs, validate, and
      * finally dispense item and exact change
+     *
+     * @throws VendingPersistenceException if cannot load or write to inventory
+     *                                     file
+     * @throws NoSuchItemExistsException   if cannot find item the user intends
+     *                                     to buy
+     * @throws InsufficientFundsException  if user doesn't input enough money
      */
     private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException,
             InsufficientFundsException {
@@ -85,8 +85,9 @@ public class VMController {
         //display inventory
         List<Item> inventory = service.getInventory();
         view.displayInventory(inventory);
-        
+
         if (inventory.isEmpty()) {
+            view.displayEmptyInventoryExitBanner();
             return; //stop buying if nothing in stock
         }
 
@@ -94,7 +95,7 @@ public class VMController {
         BigDecimal cashIn = view.getCash();
 
         //get item
-        boolean hasErrors = false;
+        boolean hasErrors;
         Item itemToBuy = null;
         do {
             String itemToBuyString = view.getUserBuySelection();
@@ -109,7 +110,6 @@ public class VMController {
         } while (hasErrors);
 
         //make sale
-        hasErrors = false;
         do {
             try {
                 Map<Coins, Integer> usersChange = service.sellItem(itemToBuy, cashIn);
@@ -132,10 +132,13 @@ public class VMController {
 
     /**
      * Stock the vending machine with merchandise to sell
+     *
+     * @throws VendingPersistenceException if cannot load or write to inventory
+     *                                     file
      */
     private void stockMachine() throws VendingPersistenceException {
         view.displayStockMachineBanner();
-        boolean hasErrors = false;
+        boolean hasErrors;
 
         do {
             Item newItem = view.getNewItemInfo();

@@ -58,6 +58,14 @@ public class VMView {
     }
 
     /**
+     * If inventory is empty, program will quit out to main menu after
+     * displaying this notice to UI
+     */
+    public void displayEmptyInventoryExitBanner() {
+        io.readString("Come back soon after we've restocked! Press ENTER to continue");
+    }
+
+    /**
      * Prompt user to enter cash into the vending machine
      *
      * @return {BigDecimal} cash amount
