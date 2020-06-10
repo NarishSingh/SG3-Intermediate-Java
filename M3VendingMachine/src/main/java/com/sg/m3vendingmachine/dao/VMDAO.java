@@ -15,9 +15,10 @@ public interface VMDAO {
      * Add an item to the inventory
      *
      * @param snackDrink {Item} new consumable that user can purchase
+     * @return {boolean} true if successfully added, false otherwise 
      * @throws VendingPersistenceException if cannot write to inventory file
      */
-    void addItem(Item snackDrink) throws VendingPersistenceException;
+    boolean addItem(Item snackDrink) throws VendingPersistenceException;
 
     /**
      * Remove an item from inventory when bought by user

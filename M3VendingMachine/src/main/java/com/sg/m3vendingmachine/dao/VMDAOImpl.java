@@ -28,10 +28,12 @@ public class VMDAOImpl implements VMDAO {
 
     /*INTERFACE IMPL*/
     @Override
-    public void addItem(Item snackDrink) throws VendingPersistenceException {
+    public boolean addItem(Item snackDrink) throws VendingPersistenceException {
         loadInventory();
-        inventory.add(snackDrink);
+        boolean added = inventory.add(snackDrink);
         writeInventory();
+        
+        return added;
     }
 
     @Override
