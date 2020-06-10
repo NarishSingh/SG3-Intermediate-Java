@@ -24,9 +24,10 @@ public interface VMDAO {
      *
      * @param snackDrink {Item} an existing consumable that was bought and needs
      *                   to be removed from inventory
+     * @return {boolean} if item was removed or not
      * @throws VendingPersistenceException if cannot read in or write to file
      */
-    void removeItem(Item snackDrink) throws VendingPersistenceException;
+    boolean removeItem(Item snackDrink) throws VendingPersistenceException;
 
     /**
      * Validate that an item exists in inventory

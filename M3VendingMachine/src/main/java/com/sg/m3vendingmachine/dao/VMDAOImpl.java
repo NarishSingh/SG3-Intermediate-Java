@@ -1,8 +1,3 @@
-/*
-FIXME
--auditDAO is functioning fine
--there was a case of the calculate change thing returning -1 nickels
-*/
 package com.sg.m3vendingmachine.dao;
 
 import com.sg.m3vendingmachine.dto.Coins;
@@ -40,14 +35,16 @@ public class VMDAOImpl implements VMDAO {
     }
 
     @Override
-    public void removeItem(Item snackDrink) throws VendingPersistenceException {
-        inventory.remove(snackDrink);
+    public boolean removeItem(Item snackDrink) throws VendingPersistenceException {
+        boolean removedItem = inventory.remove(snackDrink);
         writeInventory();
+        return removedItem;
     }
 
     @Override
     public Item getItem(String itemName) throws VendingPersistenceException,
             NoSuchItemExistsException {
+        //TODO try to chop this down...
         loadInventory();
         List<Item> matchingItems = inventory.stream()
                 .filter((item) -> item.getName().equals(itemName))
