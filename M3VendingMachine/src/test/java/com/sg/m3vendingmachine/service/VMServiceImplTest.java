@@ -7,7 +7,6 @@ import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.platform.engine.TestDescriptor;
 
 public class VMServiceImplTest {
 
@@ -51,20 +50,20 @@ public class VMServiceImplTest {
         System.out.println("getInventory");
 
         //arrange
-        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
-
+        Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"));
+        
         //act and assert
         try {
-            testServ.stockItem(newItem);
+            testServ.stockItem(onlyItem);
         } catch (VendingPersistenceException
                 | ItemDataValidationException e) {
             fail("Valid Item. No exception should be thrown");
         }
 
         assertEquals(1, testServ.getInventory().size(), "Test Inventory should only have 1 Item");
-        assertTrue(testServ.getInventory().contains(newItem), "Test Inventory should contain Energy Drink");
+        assertTrue(testServ.getInventory().contains(onlyItem), "Test Inventory should contain Energy Drink");
 
-        int testInventoryCount = testServ.inventoryCount();
+        int testInventoryCount = testServ.inventoryCount(); //==1
 
         assertEquals(testInventoryCount, testServ.getInventory().size(), "Test Inventory Count should register 1 Item");
     }
@@ -77,18 +76,16 @@ public class VMServiceImplTest {
     @Test
     public void testGetItem() throws Exception {
         System.out.println("getItem");
-        final String TEST_ITEM_NAME = "Energy Drink";
 
         //arrange
-        Item newItem = new Item(TEST_ITEM_NAME, new BigDecimal("2.99"));
-        Item testItem;
+        Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"));
 
         //act and assert
         try {
-            testServ.stockItem(newItem);
-            testItem = testServ.getItem(TEST_ITEM_NAME);
+            testServ.stockItem(onlyItem);
+            Item testItem = testServ.getItem(onlyItem.getName());
 
-            assertEquals(testItem, newItem, "New item added should be Energy Drink");
+            assertEquals(testItem, onlyItem, "New item added should Arizona");
         } catch (VendingPersistenceException
                 | ItemDataValidationException e) {
             fail("Valid Item. No exception should be thrown");
@@ -148,7 +145,7 @@ public class VMServiceImplTest {
         System.out.println("sellItem");
 
         //arrange
-        final BigDecimal overpayChange = new BigDecimal(".99");
+        final BigDecimal overpayChange = new BigDecimal("4.99");
         Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
 
         //act and assert

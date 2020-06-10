@@ -42,7 +42,6 @@ public class VMServiceImpl implements VMService {
         } catch (NoSuchItemExistsException e) {
             throw new NoSuchItemExistsException("No such item in inventory", e);
         }
-
     }
 
     @Override
