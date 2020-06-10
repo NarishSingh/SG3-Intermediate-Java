@@ -1,108 +1,161 @@
 package com.sg.m3vendingmachine.service;
 
-import com.sg.m3vendingmachine.dto.Coins;
+import com.sg.m3vendingmachine.dao.VMAuditDAO;
+import com.sg.m3vendingmachine.dao.VMDAO;
+import com.sg.m3vendingmachine.dao.VendingPersistenceException;
 import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.platform.engine.TestDescriptor;
 
 public class VMServiceImplTest {
-    
+
+    private VMService testServ;
+
     public VMServiceImplTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
+        VMDAO testDAO = new VMDAOImplStub();
+        VMAuditDAO testAuditDAO = new VMAuditDAOImplStub();
+
+        testServ = new VMServiceImpl(testDAO, testAuditDAO);
     }
 
     /**
      * Test of stockItem method, of class VMServiceImpl.
+     *
+     * @throws Exception
      */
     @Test
     public void testStockItem() throws Exception {
         System.out.println("stockItem");
-        Item snackDrink = null;
-        VMServiceImpl instance = null;
-        instance.stockItem(snackDrink);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        //arrange
+        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+
+        //act and assert
+        try {
+            testServ.stockItem(newItem);
+        } catch (VendingPersistenceException
+                | ItemDataValidationException e) {
+            fail("Valid Item. No exception should be thrown");
+        }
     }
 
     /**
-     * Test of getInventory method, of class VMServiceImpl.
+     * Test of getInventory and inventoryCount method, of class VMServiceImpl.
+     *
+     * @throws Exception
      */
     @Test
-    public void testGetInventory() throws Exception {
+    public void testGetInventoryWithCount() throws Exception {
         System.out.println("getInventory");
-        VMServiceImpl instance = null;
-        List<Item> expResult = null;
-        List<Item> result = instance.getInventory();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        //arrange
+        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+
+        //act and assert
+        try {
+            testServ.stockItem(newItem);
+        } catch (VendingPersistenceException
+                | ItemDataValidationException e) {
+            fail("Valid Item. No exception should be thrown");
+        }
+
+        assertEquals(1, testServ.getInventory().size(), "Test Inventory should only have 1 Item");
+        assertTrue(testServ.getInventory().contains(newItem), "Test Inventory should contain Energy Drink");
+
+        int testInventoryCount = testServ.inventoryCount();
+
+        assertEquals(testInventoryCount, testServ.getInventory().size(), "Test Inventory Count should register 1 Item");
     }
 
     /**
      * Test of getItem method, of class VMServiceImpl.
+     *
+     * @throws Exception
      */
     @Test
     public void testGetItem() throws Exception {
         System.out.println("getItem");
-        String itemName = "";
-        VMServiceImpl instance = null;
-        Item expResult = null;
-        Item result = instance.getItem(itemName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final String TEST_ITEM_NAME = "Energy Drink";
+
+        //arrange
+        Item newItem = new Item(TEST_ITEM_NAME, new BigDecimal("2.99"));
+        Item testItem;
+
+        //act and assert
+        try {
+            testServ.stockItem(newItem);
+            testItem = testServ.getItem(TEST_ITEM_NAME);
+
+            assertEquals(testItem, newItem, "New item added should be Energy Drink");
+        } catch (VendingPersistenceException
+                | ItemDataValidationException e) {
+            fail("Valid Item. No exception should be thrown");
+        }
+    }
+
+    /**
+     * Test of sellItem method, of class VMServiceImpl. This will have exact
+     * change and successful run
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSellItemSuccess() throws Exception {
+        System.out.println("sellItem");
+
+        //arrange
+        final BigDecimal exactChange = new BigDecimal("2.99");
+        Item newItem = new Item("Energy Drink", exactChange);
+
+        //act and assert
+        try {
+            testServ.sellItem(newItem, exactChange);
+        } catch (InsufficientFundsException e) {
+            fail("Should not be failing, valid change.");
+        }
     }
 
     /**
      * Test of sellItem method, of class VMServiceImpl.
+     *
+     * @throws Exception
      */
     @Test
-    public void testSellItem() throws Exception {
+    public void testSellItemFailUnderPay() throws Exception {
         System.out.println("sellItem");
-        Item snackDrink = null;
-        BigDecimal userCashIn = null;
-        VMServiceImpl instance = null;
-        Map<Coins, Integer> expResult = null;
-        Map<Coins, Integer> result = instance.sellItem(snackDrink, userCashIn);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        //arrange
+        final BigDecimal underpayChange = new BigDecimal(".99");
+        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+
+        //act and assert
+        try {
+            testServ.sellItem(newItem, underpayChange);
+        } catch (InsufficientFundsException e) {
+            return; //should fail
+        }
     }
 
     /**
-     * Test of inventoryCount method, of class VMServiceImpl.
+     * Test of sellItem method, of class VMServiceImpl.
+     *
+     * @throws Exception
      */
     @Test
-    public void testInventoryCount() throws Exception {
-        System.out.println("inventoryCount");
-        VMServiceImpl instance = null;
-        int expResult = 0;
-        int result = instance.inventoryCount();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSellItemFailOverPay() throws Exception {
+        System.out.println("sellItem");
+
+        //arrange
+        final BigDecimal overpayChange = new BigDecimal(".99");
+        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+
+        //act and assert
+        try {
+            testServ.sellItem(newItem, overpayChange);
+        } catch (InsufficientFundsException e) {
+            fail("Shouldn't fail, enough money has been deposited even if its over the amount");
+        }
     }
-    
 }

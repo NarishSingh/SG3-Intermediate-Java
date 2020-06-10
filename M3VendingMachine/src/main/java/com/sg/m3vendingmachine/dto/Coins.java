@@ -1,6 +1,6 @@
 /*
 coins enum
-*/
+ */
 package com.sg.m3vendingmachine.dto;
 
 public enum Coins {

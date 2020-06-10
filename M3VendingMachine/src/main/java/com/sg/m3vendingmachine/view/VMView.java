@@ -1,3 +1,6 @@
+/*
+catch Number format exception but also throw in controller
+ */
 package com.sg.m3vendingmachine.view;
 
 import com.sg.m3vendingmachine.dto.Coins;
