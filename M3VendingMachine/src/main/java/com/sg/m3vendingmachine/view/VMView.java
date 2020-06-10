@@ -71,7 +71,7 @@ public class VMView {
      * @return {BigDecimal} cash amount
      */
     public BigDecimal getCash() {
-        BigDecimal cash = new BigDecimal(io.readString("Enter cash amount: $"));
+        BigDecimal cash = new BigDecimal(io.readString("Enter cash amount: $").trim());
         cash.setScale(2, RoundingMode.HALF_UP);
 
         return cash;
@@ -83,7 +83,7 @@ public class VMView {
      * @return {String} a string of what the user wants to buy
      */
     public String getUserBuySelection() {
-        return io.readString("Please enter name of product to buy: ");
+        return io.readString("Please enter name of product to buy: ").trim();
     }
 
     /**
@@ -92,7 +92,7 @@ public class VMView {
      * @return {BigDecimal} cash amount
      */
     public BigDecimal getRemainingCash() {
-        BigDecimal remainingCash = new BigDecimal(io.readString("Please pay remaining balance: "));
+        BigDecimal remainingCash = new BigDecimal(io.readString("Please pay remaining balance: ").trim());
         remainingCash.setScale(2, RoundingMode.HALF_UP);
 
         return remainingCash;
@@ -138,8 +138,8 @@ public class VMView {
      * @return {Item} new consumable that can be purchased
      */
     public Item getNewItemInfo() {
-        String itemName = io.readString("Please enter item name: ");
-        BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: $"));
+        String itemName = io.readString("Please enter item name: ").trim();
+        BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: $").trim());
         itemCost.setScale(2, RoundingMode.HALF_UP);
 
         return new Item(itemName, itemCost);
