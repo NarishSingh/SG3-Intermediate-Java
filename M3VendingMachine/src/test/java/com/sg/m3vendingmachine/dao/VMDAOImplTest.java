@@ -104,7 +104,8 @@ public class VMDAOImplTest {
     }
 
     /**
-     * Test of dispenseItemChange method, of class VMDAOImpl. This will pass but needs to dispense change
+     * Test of dispenseItemChange method, of class VMDAOImpl. This will pass but
+     * needs to dispense change
      */
     @Test
     public void testDispenseItemChangeSuccess() throws Exception {
@@ -133,8 +134,38 @@ public class VMDAOImplTest {
     }
 
     /**
-     * Test of dispenseItemChange method, of class VMDAOImpl. This will fail as we underpaid
-     * @throws Exception
+     * Test of dispenseItemChange method, of class VMDAOImpl. This will pass
+     * without dispensing change
+     */
+    @Test
+    public void testDispenseItemChangeSuccessNoChange() throws Exception {
+        System.out.println("dispenseItemChange - Success, No Change");
+
+        //arrange
+        String testName1 = "Arizona Iced Tea";
+        BigDecimal testCost1 = new BigDecimal("1.00");
+        Item test1 = new Item(testName1, testCost1);
+
+        BigDecimal exactPay = new BigDecimal("1.00");
+
+        Map<Coins, Integer> expectedChange = new HashMap<>(); //empty
+        expectedChange.put(Coins.QUARTERS, 0);
+        expectedChange.put(Coins.DIMES, 0);
+        expectedChange.put(Coins.NICKELS, 0);
+        expectedChange.put(Coins.PENNIES, 0);
+
+        //act & assert
+        try {
+            Map<Coins, Integer> testChange = testDAO.dispenseItemChange(test1, exactPay);
+            assertEquals(expectedChange, testChange, "Transaction should return no change");
+        } catch (InsufficientFundsException e) {
+            fail("Shouldn't be failing");
+        }
+    }
+
+    /**
+     * Test of dispenseItemChange method, of class VMDAOImpl. This will fail as
+     * we underpaid
      */
     @Test
     public void testDispenseItemChangeFail() throws Exception {
