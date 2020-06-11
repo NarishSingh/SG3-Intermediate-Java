@@ -1,6 +1,3 @@
-/*
-catch Number format exception but also throw in controller
- */
 package com.sg.m3vendingmachine.view;
 
 import com.sg.m3vendingmachine.dto.Coins;
@@ -71,7 +68,7 @@ public class VMView {
     /**
      * Prompt user to enter cash into the vending machine
      *
-     * @return {BigDecimal} cash amount
+     * @return {BigDecimal} cash amount for purchasing
      */
     public BigDecimal getCash() {
         BigDecimal cash = new BigDecimal(io.readString("Enter cash amount: $").trim());
@@ -83,7 +80,7 @@ public class VMView {
     /**
      * Prompt user to enter the item they want to buy
      *
-     * @return {String} a string of what the user wants to buy
+     * @return {String} a string of the item name
      */
     public String getUserBuySelection() {
         return io.readString("Please enter name of product to buy: ").trim();
@@ -92,7 +89,7 @@ public class VMView {
     /**
      * Prompt user to enter cash again to pay off the remaining balance
      *
-     * @return {BigDecimal} cash amount
+     * @return {BigDecimal} cash amount to be added to the initial input of cash
      */
     public BigDecimal getRemainingCash() {
         BigDecimal remainingCash = new BigDecimal(io.readString("Please pay remaining balance: ").trim());
@@ -115,7 +112,8 @@ public class VMView {
      * Confirm a purchase, and print change back for user
      *
      * @param bought {Item} the purchased item
-     * @param change {Map} change in the form of coins
+     * @param change {Map} change HashMap using COINS enum keys, and Integer
+     *               values representing the number of coins to be dispensed
      */
     public void displayPurchaseWithChange(Item bought, Map<Coins, Integer> change) {
         io.print("Here is your " + bought.getName());

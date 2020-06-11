@@ -49,7 +49,6 @@ public class VMController {
                         unknownCommand();
                     }
                 }
-
             }
             exitMessage();
         } catch (VendingPersistenceException e) {

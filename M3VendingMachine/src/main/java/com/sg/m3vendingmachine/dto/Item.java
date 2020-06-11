@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Item {
 
     /*fields*/
-//    private final ItemType type;
     private String name;
     private BigDecimal cost;
 

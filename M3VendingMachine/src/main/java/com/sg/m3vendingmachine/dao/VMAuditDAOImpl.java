@@ -1,6 +1,8 @@
 package com.sg.m3vendingmachine.dao;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
 public class VMAuditDAOImpl implements VMAuditDAO {

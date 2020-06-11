@@ -82,7 +82,7 @@ public class VMServiceImpl implements VMService {
     public int inventoryCount() throws VendingPersistenceException {
         return dao.inventoryCount();
     }
-
+    
     /**
      * Validate that a new item has a valid name and price above 0
      *
