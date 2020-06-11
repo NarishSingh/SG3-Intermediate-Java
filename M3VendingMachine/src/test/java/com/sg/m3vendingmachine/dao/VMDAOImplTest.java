@@ -48,7 +48,8 @@ public class VMDAOImplTest {
     }
 
     /**
-     * Test of removeItem method, of class VMDAOImpl.
+     * Test of removeItem method, of class VMDAOImpl. Uses addItem and
+     * getInventory methods
      */
     @Test
     public void testRemoveItem() throws Exception {
@@ -103,7 +104,7 @@ public class VMDAOImplTest {
     }
 
     /**
-     * Test of dispenseItemChange method, of class VMDAOImpl.
+     * Test of dispenseItemChange method, of class VMDAOImpl. This will pass but needs to dispense change
      */
     @Test
     public void testDispenseItemChangeSuccess() throws Exception {
@@ -132,7 +133,7 @@ public class VMDAOImplTest {
     }
 
     /**
-     *
+     * Test of dispenseItemChange method, of class VMDAOImpl. This will fail as we underpaid
      * @throws Exception
      */
     @Test

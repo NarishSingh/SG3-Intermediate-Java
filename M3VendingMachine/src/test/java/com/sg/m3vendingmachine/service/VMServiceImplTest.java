@@ -69,7 +69,7 @@ public class VMServiceImplTest {
 
         int testInventoryCount = testServ.inventoryCount(); //==1
 
-        assertEquals(testInventoryCount, testServ.getInventory().size(), "Test Inventory Count should register 1 Item");
+        assertEquals(testInventoryCount, testServ.getInventory().size(), "Test Inventory count should register 1 Item");
     }
 
     /**
@@ -117,7 +117,7 @@ public class VMServiceImplTest {
         try {
             Map<Coins, Integer> testChange = testServ.sellItem(newItem, exactChange);
 
-            assertEquals(expectedChange, testChange, "Should be getting back no change");
+            assertEquals(expectedChange, testChange, "Should be getting back no change at all");
         } catch (InsufficientFundsException e) {
             fail("Should not be failing, valid change.");
         }
@@ -148,7 +148,7 @@ public class VMServiceImplTest {
     }
 
     /**
-     * Test of sellItem method, of class VMServiceImpl. This will pass and we
+     * Test of sellItem method, of class VMServiceImpl. This will pass but we
      * will need to get change back
      *
      * @throws Exception
