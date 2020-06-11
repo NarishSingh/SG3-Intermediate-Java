@@ -3,8 +3,12 @@ package com.sg.m3vendingmachine.service;
 import com.sg.m3vendingmachine.dao.VMAuditDAO;
 import com.sg.m3vendingmachine.dao.VMDAO;
 import com.sg.m3vendingmachine.dao.VendingPersistenceException;
+import com.sg.m3vendingmachine.dto.Coins;
 import com.sg.m3vendingmachine.dto.Item;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,7 +55,7 @@ public class VMServiceImplTest {
 
         //arrange
         Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"));
-        
+
         //act and assert
         try {
             testServ.stockItem(onlyItem);
@@ -93,39 +97,47 @@ public class VMServiceImplTest {
     }
 
     /**
-     * Test of sellItem method, of class VMServiceImpl. This will have exact
-     * change and successful run
+     * Test of sellItem method, of class VMServiceImpl. This will pass with
+     * exact change
      *
      * @throws Exception
      */
     @Test
     public void testSellItemSuccess() throws Exception {
-        System.out.println("sellItem");
+        System.out.println("sellItem - Exact");
 
         //arrange
         final BigDecimal exactChange = new BigDecimal("2.99");
+        exactChange.setScale(2, RoundingMode.HALF_UP);
         Item newItem = new Item("Energy Drink", exactChange);
+
+        Map<Coins, Integer> expectedChange = new HashMap<>(); //should be empty
 
         //act and assert
         try {
-            testServ.sellItem(newItem, exactChange);
+            Map<Coins, Integer> testChange = testServ.sellItem(newItem, exactChange);
+
+            assertEquals(expectedChange, testChange, "Should be getting back no change");
         } catch (InsufficientFundsException e) {
             fail("Should not be failing, valid change.");
         }
     }
 
     /**
-     * Test of sellItem method, of class VMServiceImpl.
+     * Test of sellItem method, of class VMServiceImpl. This will fail as we
+     * under paid, triggering the exception
      *
      * @throws Exception
      */
     @Test
     public void testSellItemFailUnderPay() throws Exception {
-        System.out.println("sellItem");
+        System.out.println("sellItem - Under Paid");
 
         //arrange
-        final BigDecimal underpayChange = new BigDecimal(".99");
+        BigDecimal underpayChange = new BigDecimal(".99");
+        underpayChange.setScale(2, RoundingMode.HALF_UP);
         Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+        newItem.getCost().setScale(2, RoundingMode.HALF_UP);
 
         //act and assert
         try {
@@ -136,23 +148,38 @@ public class VMServiceImplTest {
     }
 
     /**
-     * Test of sellItem method, of class VMServiceImpl.
+     * Test of sellItem method, of class VMServiceImpl. This will pass and we
+     * will need to get change back
      *
      * @throws Exception
      */
     @Test
-    public void testSellItemFailOverPay() throws Exception {
-        System.out.println("sellItem");
+    public void testSellItemGetChange() throws Exception {
+        System.out.println("sellItem - Overpaid");
 
         //arrange
-        final BigDecimal overpayChange = new BigDecimal("4.99");
-        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+        BigDecimal overpay = new BigDecimal("5.16");
+        overpay.setScale(2, RoundingMode.HALF_UP);
+        Item newItem = new Item("Energy Drink", new BigDecimal("3.00"));
+        newItem.getCost().setScale(2, RoundingMode.HALF_UP);
+        BigDecimal expectedDifference = new BigDecimal("2.16");
+        expectedDifference.setScale(2, RoundingMode.HALF_UP);
+
+        Map<Coins, Integer> expectedChange = new HashMap<>();
+        expectedChange.put(Coins.QUARTERS, 8);
+        expectedChange.put(Coins.DIMES, 1);
+        expectedChange.put(Coins.NICKELS, 1);
+        expectedChange.put(Coins.PENNIES, 1);
 
         //act and assert
         try {
-            testServ.sellItem(newItem, overpayChange);
+            Map<Coins, Integer> testChange = testServ.sellItem(newItem, overpay);
+            BigDecimal changeAmount = overpay.subtract(newItem.getCost());
+
+            assertEquals(expectedDifference, changeAmount, "Should be getting back $2.16");
+            assertEquals(expectedChange, testChange, "Should be getting back 8 quarters, 1 dime, 1 nickel, 1 penny");
         } catch (InsufficientFundsException e) {
-            fail("Shouldn't fail, enough money has been deposited even if its over the amount");
+            fail("Shouldn't fail, deposited enough money to receive change");
         }
     }
 }

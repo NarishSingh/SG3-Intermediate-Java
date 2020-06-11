@@ -13,7 +13,6 @@ import java.util.Map;
 public class VMDAOImplStub implements VMDAO {
 
     public Item onlyItem;
-    final BigDecimal overpay = new BigDecimal("2.00");
 
     /*ctors*/
     public VMDAOImplStub() {
@@ -56,10 +55,10 @@ public class VMDAOImplStub implements VMDAO {
     public Map<Coins, Integer> dispenseItemChange(Item snackDrink, BigDecimal userCashIn)
             throws InsufficientFundsException {
         Map<Coins, Integer> expectedChange = new HashMap<>();
-        expectedChange.put(Coins.QUARTERS, 4);
-        expectedChange.put(Coins.DIMES, 0);
-        expectedChange.put(Coins.NICKELS, 0);
-        expectedChange.put(Coins.PENNIES, 0);
+        expectedChange.put(Coins.QUARTERS, 8);
+        expectedChange.put(Coins.DIMES, 1);
+        expectedChange.put(Coins.NICKELS, 1);
+        expectedChange.put(Coins.PENNIES, 1);
         
         return expectedChange;
     }
