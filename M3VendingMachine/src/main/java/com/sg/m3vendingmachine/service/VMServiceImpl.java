@@ -45,13 +45,15 @@ public class VMServiceImpl implements VMService {
     }
 
     @Override
-    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) throws VendingPersistenceException, InsufficientFundsException {
+    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) 
+            throws VendingPersistenceException, InsufficientFundsException {
         Map<Coins, Integer> change = new HashMap<>();
 
         if (snackDrink.getCost().compareTo(userCashIn) == 0) {
             //exact/no change
             try {
-                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " SOLD");
+                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" 
+                        + snackDrink.getCost().toString() + " SOLD");
                 dao.removeItem(snackDrink);
 
                 return change; //empty
@@ -62,7 +64,8 @@ public class VMServiceImpl implements VMService {
             //need change
             try {
                 change = dao.dispenseItemChange(snackDrink, userCashIn);
-                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " SOLD");
+                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" 
+                        + snackDrink.getCost().toString() + " SOLD. CHANGE :" + change.toString());
                 dao.removeItem(snackDrink);
 
                 return change;
@@ -73,7 +76,6 @@ public class VMServiceImpl implements VMService {
             //underpaid
             throw new InsufficientFundsException("Not enough money to buy item");
         }
-
     }
 
     @Override
