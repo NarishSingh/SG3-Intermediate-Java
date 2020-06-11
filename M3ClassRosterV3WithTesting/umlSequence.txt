@@ -1,23 +1,21 @@
 @startuml
 title Class Roster MVC II - createStudent Sequence
 
-App -> Controller : run()
-
 Controller -> View : getNewStudentInfo()
 View --> Controller : Student
 
-controller -> service: createStudent()
-Service -> Service : validates Student
-service -> dao: addStudent()
-dao -> service: Student
+Controller -> Service: createStudent()
+Service --> Service : validates Student
+Service -> DAO: addStudent()
+DAO --> Service: Student
 
-service -> auditDao: writeAuditEntry()
-auditDao -> service: void
+Service -> AuditDao: writeAuditEntry()
+AuditDao --> Service: void
 
-service -> controller: void `can be Student obj
+Service --> Controller: void
 
-controller -> view: displayCreateSuccessBanner()
-view -> controller: void
+Controller -> View: displayCreateSuccessBanner()
+View --> Controller: void
 
 @enduml
 
