@@ -50,7 +50,7 @@ public class VMDAOImpl implements VMDAO {
 
         Item matchingItem = inventory.stream()
                 .filter((item) -> item.getName().equals(itemName))
-                .findAny()
+                .findFirst()
                 .orElse(null);
 
         if (matchingItem == null) {
