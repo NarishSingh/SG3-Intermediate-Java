@@ -52,9 +52,7 @@ public class VMController {
 
             }
             exitMessage();
-        } catch (VendingPersistenceException
-                | NoSuchItemExistsException
-                | InsufficientFundsException e) {
+        } catch (VendingPersistenceException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
@@ -78,8 +76,7 @@ public class VMController {
      *                                     to buy
      * @throws InsufficientFundsException  if user doesn't input enough money
      */
-    private void buyItem() throws VendingPersistenceException, NoSuchItemExistsException,
-            InsufficientFundsException {
+    private void buyItem() throws VendingPersistenceException {
         view.displayBuyBanner();
 
         //display inventory
@@ -92,10 +89,19 @@ public class VMController {
         }
 
         //user cash
-        BigDecimal cashIn = view.getCash();
+        boolean hasErrors;
+        BigDecimal cashIn = new BigDecimal("0");
+        do {
+            try {
+                cashIn = view.getCash();
+                hasErrors = false;
+            } catch (NumberFormatException e) {
+                hasErrors = true;
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (hasErrors);
 
         //get item
-        boolean hasErrors;
         Item itemToBuy = null;
         do {
             String itemToBuyString = view.getUserBuySelection();
@@ -103,7 +109,7 @@ public class VMController {
             try {
                 itemToBuy = service.getItem(itemToBuyString);
                 hasErrors = false;
-            } catch (VendingPersistenceException | NoSuchItemExistsException e) {
+            } catch (NoSuchItemExistsException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
             }
