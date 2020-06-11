@@ -25,8 +25,6 @@ public class VMServiceImplTest {
 
     /**
      * Test of stockItem method, of class VMServiceImpl.
-     *
-     * @throws Exception
      */
     @Test
     public void testStockItem() throws Exception {
@@ -46,8 +44,6 @@ public class VMServiceImplTest {
 
     /**
      * Test of getInventory and inventoryCount method, of class VMServiceImpl.
-     *
-     * @throws Exception
      */
     @Test
     public void testGetInventoryWithCount() throws Exception {
@@ -74,8 +70,6 @@ public class VMServiceImplTest {
 
     /**
      * Test of getItem method, of class VMServiceImpl.
-     *
-     * @throws Exception
      */
     @Test
     public void testGetItem() throws Exception {
@@ -99,8 +93,6 @@ public class VMServiceImplTest {
     /**
      * Test of sellItem method, of class VMServiceImpl. This will pass with
      * exact change
-     *
-     * @throws Exception
      */
     @Test
     public void testSellItemSuccess() throws Exception {
@@ -126,8 +118,6 @@ public class VMServiceImplTest {
     /**
      * Test of sellItem method, of class VMServiceImpl. This will fail as we
      * under paid, triggering the exception
-     *
-     * @throws Exception
      */
     @Test
     public void testSellItemFailUnderPay() throws Exception {
@@ -150,8 +140,6 @@ public class VMServiceImplTest {
     /**
      * Test of sellItem method, of class VMServiceImpl. This will pass but we
      * will need to get change back
-     *
-     * @throws Exception
      */
     @Test
     public void testSellItemGetChange() throws Exception {
