@@ -32,7 +32,7 @@ public class VMDAOImpl implements VMDAO {
         loadInventory();
         boolean added = inventory.add(snackDrink);
         writeInventory();
-        
+
         return added;
     }
 
@@ -46,16 +46,17 @@ public class VMDAOImpl implements VMDAO {
     @Override
     public Item getItem(String itemName) throws VendingPersistenceException,
             NoSuchItemExistsException {
-        //TODO try to chop this down...
         loadInventory();
-        List<Item> matchingItems = inventory.stream()
-                .filter((item) -> item.getName().equals(itemName))
-                .collect(Collectors.toList());
 
-        if (matchingItems.isEmpty()) {
+        Item matchingItem = inventory.stream()
+                .filter((item) -> item.getName().equals(itemName))
+                .findAny()
+                .orElse(null);
+
+        if (matchingItem == null) {
             throw new NoSuchItemExistsException("No such item in inventory");
         } else {
-            return matchingItems.get(0);
+            return matchingItem;
         }
     }
 
