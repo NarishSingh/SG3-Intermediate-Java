@@ -130,7 +130,10 @@ public class VMController {
             } catch (InsufficientFundsException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
+            }
 
+            //get more cash
+            if (hasErrors) {
                 cashIn = cashIn.add(view.getRemainingCash());
             }
         } while (hasErrors);
@@ -147,8 +150,20 @@ public class VMController {
         boolean hasErrors;
 
         do {
-            Item newItem = view.getNewItemInfo();
+            Item newItem = null;
 
+            //new item info
+            do {
+                try {
+                    newItem = view.getNewItemInfo();
+                    hasErrors = false;
+                } catch (NumberFormatException e) {
+                    hasErrors = true;
+                    view.displayErrorMessage(e.getMessage());
+                }
+            } while (hasErrors);
+
+            
             try {
                 service.stockItem(newItem);
                 int itemCount = service.inventoryCount();
