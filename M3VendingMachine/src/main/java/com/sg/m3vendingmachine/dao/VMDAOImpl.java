@@ -7,7 +7,6 @@ import com.sg.m3vendingmachine.service.NoSuchItemExistsException;
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class VMDAOImpl implements VMDAO {
 
