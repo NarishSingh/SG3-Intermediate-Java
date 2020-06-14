@@ -81,7 +81,6 @@ public class VMController {
         //display inventory
         List<Item> inventory = service.getInventory();
         view.displayInventory(inventory);
-
         if (inventory.isEmpty()) {
             view.displayEmptyInventoryExitBanner();
             return; //stop buying if nothing in stock
@@ -162,10 +161,9 @@ public class VMController {
                 }
             } while (hasErrors);
 
-            
             try {
                 service.stockItem(newItem);
-                int itemCount = service.inventoryCount();
+                int itemCount = service.inventoryCount(); //display item count
                 view.displayStockMachineSuccessBanner(itemCount);
                 hasErrors = false;
             } catch (ItemDataValidationException e) {

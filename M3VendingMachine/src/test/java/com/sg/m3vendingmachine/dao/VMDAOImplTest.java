@@ -148,7 +148,7 @@ public class VMDAOImplTest {
 
         BigDecimal exactPay = new BigDecimal("1.00");
 
-        Map<Coins, Integer> expectedChange = new HashMap<>(); //empty
+        Map<Coins, Integer> expectedChange = new HashMap<>();
         expectedChange.put(Coins.QUARTERS, 0);
         expectedChange.put(Coins.DIMES, 0);
         expectedChange.put(Coins.NICKELS, 0);
@@ -159,7 +159,7 @@ public class VMDAOImplTest {
             Map<Coins, Integer> testChange = testDAO.dispenseItemChange(test1, exactPay);
             assertEquals(expectedChange, testChange, "Transaction should return no change");
         } catch (InsufficientFundsException e) {
-            fail("Shouldn't be failing");
+            fail("Shouldn't be failing, enough money was entered");
         }
     }
 

@@ -117,7 +117,7 @@ public class VMServiceImplTest {
 
     /**
      * Test of sellItem method, of class VMServiceImpl. This will fail as we
-     * under paid, triggering the exception
+     * underpaid, triggering the exception
      */
     @Test
     public void testSellItemFailUnderPay() throws Exception {
