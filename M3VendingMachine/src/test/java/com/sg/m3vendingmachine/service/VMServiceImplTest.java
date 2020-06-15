@@ -110,6 +110,7 @@ public class VMServiceImplTest {
             Map<Coins, Integer> testChange = testServ.sellItem(newItem, exactChange);
 
             assertEquals(expectedChange, testChange, "Should be getting back no change at all");
+            assertEquals(newItem.getItemCount(), 0, "Quanity should be 0 after sale");
         } catch (InsufficientFundsException e) {
             fail("Should not be failing, valid change.");
         }
@@ -166,6 +167,7 @@ public class VMServiceImplTest {
 
             assertEquals(expectedDifference, changeAmount, "Should be getting back $2.16");
             assertEquals(expectedChange, testChange, "Should be getting back 8 quarters, 1 dime, 1 nickel, 1 penny");
+            assertEquals(newItem.getItemCount(), 0, "Quanity should be 0 after sale");
         } catch (InsufficientFundsException e) {
             fail("Shouldn't fail, deposited enough money to receive change");
         }
