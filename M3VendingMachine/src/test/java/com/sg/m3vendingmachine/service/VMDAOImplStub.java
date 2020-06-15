@@ -16,7 +16,7 @@ public class VMDAOImplStub implements VMDAO {
 
     /*ctors*/
     public VMDAOImplStub() {
-        onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"));
+        onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"), 1);
     }
 
     public VMDAOImplStub(Item onlyItem) {
@@ -25,13 +25,21 @@ public class VMDAOImplStub implements VMDAO {
 
     /*stubs*/
     @Override
-    public boolean addItem(Item snackDrink) throws VendingPersistenceException {
-        return snackDrink==onlyItem;
+    public Item addItem(Item snackDrink) throws VendingPersistenceException {
+        if (snackDrink == onlyItem) {
+            return onlyItem;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public boolean removeItem(Item snackDrink) throws VendingPersistenceException {
-        return snackDrink==onlyItem;
+    public Item removeItem(Item snackDrink) throws VendingPersistenceException {
+        if (snackDrink == onlyItem) {
+            return onlyItem;
+        } else {
+            return null;
+        }
     }
 
     @Override

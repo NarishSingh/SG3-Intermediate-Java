@@ -14,9 +14,10 @@ public class Item {
     private int itemCount;
 
     /*ctor*/
-    public Item(String name, BigDecimal cost) {
+    public Item(String name, BigDecimal cost, int itemCount) {
         this.name = name;
         this.cost = cost;
+        this.itemCount = itemCount;
     }
 
     /*getters/setter*/
@@ -45,7 +46,6 @@ public class Item {
     }
 
     /*testing methods*/
-
     @Override
     public int hashCode() {
         int hash = 7;

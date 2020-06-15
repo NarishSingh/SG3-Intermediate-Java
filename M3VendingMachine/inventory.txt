@@ -1,0 +1,3 @@
+Water::100::25
+Apple::0.50::25
+Bubble Gum::0.25::0

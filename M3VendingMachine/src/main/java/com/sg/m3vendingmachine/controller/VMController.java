@@ -131,8 +131,17 @@ public class VMController {
             }
 
             //get more cash
+            boolean badCash = true;
             if (hasErrors) {
-                cashIn = cashIn.add(view.getRemainingCash());
+                do {
+                    try {
+                        cashIn = cashIn.add(view.getRemainingCash());
+                        badCash = false;
+                    } catch (NumberFormatException e) {
+                        badCash = true;
+                        view.displayErrorMessage(e.getMessage());
+                    }
+                } while (badCash);
             }
         } while (hasErrors);
     }

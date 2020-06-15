@@ -26,7 +26,7 @@ public class VMServiceImpl implements VMService {
     public void stockItem(Item snackDrink) throws ItemDataValidationException, VendingPersistenceException {
         validateNewItemData(snackDrink);
         dao.addItem(snackDrink);
-        auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " ADDED");
+        auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" + snackDrink.getCost().toString() + " ADDED. CURRENT QUANTITY: " + snackDrink.getItemCount());
     }
 
     @Override
@@ -45,16 +45,21 @@ public class VMServiceImpl implements VMService {
     }
 
     @Override
-    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn) 
+    public Map<Coins, Integer> sellItem(Item snackDrink, BigDecimal userCashIn)
             throws VendingPersistenceException, InsufficientFundsException {
         Map<Coins, Integer> change = new HashMap<>();
 
         if (snackDrink.getCost().compareTo(userCashIn) == 0) {
             //exact/no change
             try {
-                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" 
+                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $"
                         + snackDrink.getCost().toString() + " SOLD");
+
+                //edit item quantities
                 dao.removeItem(snackDrink);
+                int itemCount = snackDrink.getItemCount();
+                snackDrink.setItemCount(--itemCount);
+                dao.addItem(snackDrink);
 
                 return change; //empty
             } catch (VendingPersistenceException e) {
@@ -64,9 +69,14 @@ public class VMServiceImpl implements VMService {
             //need change
             try {
                 change = dao.dispenseItemChange(snackDrink, userCashIn);
-                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $" 
+                auditDAO.writeAuditEntry("ITEM: \"" + snackDrink.getName() + "\" - $"
                         + snackDrink.getCost().toString() + " SOLD. CHANGE :" + change.toString());
+
+                //edit item quantities
                 dao.removeItem(snackDrink);
+                int itemCount = snackDrink.getItemCount();
+                snackDrink.setItemCount(--itemCount);
+                dao.addItem(snackDrink);
 
                 return change;
             } catch (VendingPersistenceException e) {
@@ -82,7 +92,7 @@ public class VMServiceImpl implements VMService {
     public int inventoryCount() throws VendingPersistenceException {
         return dao.inventoryCount();
     }
-    
+
     /**
      * Validate that a new item has a valid name and price above 0
      *

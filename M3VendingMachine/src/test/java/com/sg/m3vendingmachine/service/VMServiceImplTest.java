@@ -31,7 +31,7 @@ public class VMServiceImplTest {
         System.out.println("stockItem");
 
         //arrange
-        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"), 1);
 
         //act and assert
         try {
@@ -50,7 +50,7 @@ public class VMServiceImplTest {
         System.out.println("getInventory");
 
         //arrange
-        Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"));
+        Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"), 1);
 
         //act and assert
         try {
@@ -76,7 +76,7 @@ public class VMServiceImplTest {
         System.out.println("getItem");
 
         //arrange
-        Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"));
+        Item onlyItem = new Item("Arizona Iced Tea", new BigDecimal("1.00"), 1);
 
         //act and assert
         try {
@@ -101,7 +101,7 @@ public class VMServiceImplTest {
         //arrange
         final BigDecimal exactChange = new BigDecimal("2.99");
         exactChange.setScale(2, RoundingMode.HALF_UP);
-        Item newItem = new Item("Energy Drink", exactChange);
+        Item newItem = new Item("Energy Drink", exactChange, 1);
 
         Map<Coins, Integer> expectedChange = new HashMap<>(); //should be empty
 
@@ -126,7 +126,7 @@ public class VMServiceImplTest {
         //arrange
         BigDecimal underpayChange = new BigDecimal(".99");
         underpayChange.setScale(2, RoundingMode.HALF_UP);
-        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"));
+        Item newItem = new Item("Energy Drink", new BigDecimal("2.99"), 1);
         newItem.getCost().setScale(2, RoundingMode.HALF_UP);
 
         //act and assert
@@ -148,7 +148,7 @@ public class VMServiceImplTest {
         //arrange
         BigDecimal overpay = new BigDecimal("5.16");
         overpay.setScale(2, RoundingMode.HALF_UP);
-        Item newItem = new Item("Energy Drink", new BigDecimal("3.00"));
+        Item newItem = new Item("Energy Drink", new BigDecimal("3.00"), 1);
         newItem.getCost().setScale(2, RoundingMode.HALF_UP);
         BigDecimal expectedDifference = new BigDecimal("2.16");
         expectedDifference.setScale(2, RoundingMode.HALF_UP);

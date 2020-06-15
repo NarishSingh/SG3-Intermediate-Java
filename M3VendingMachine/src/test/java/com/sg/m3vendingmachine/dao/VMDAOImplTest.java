@@ -36,7 +36,8 @@ public class VMDAOImplTest {
         //arrange
         String testName = "Arizona Iced Tea";
         BigDecimal testCost = new BigDecimal("1.00");
-        Item test = new Item(testName, testCost);
+        int itemCt = 1;
+        Item test = new Item(testName, testCost, itemCt);
 
         //act
         testDAO.addItem(test);
@@ -58,20 +59,22 @@ public class VMDAOImplTest {
         //arrange
         String testName1 = "Arizona Iced Tea";
         BigDecimal testCost1 = new BigDecimal("1.00");
-        Item test1 = new Item(testName1, testCost1);
+        int itemCt = 1;
+        Item test1 = new Item(testName1, testCost1, itemCt);
 
         String testName2 = "Coconut Water";
         BigDecimal testCost2 = new BigDecimal("2.99");
-        Item test2 = new Item(testName2, testCost2);
+        int itemCt2 = 1;
+        Item test2 = new Item(testName2, testCost2, itemCt2);
 
         //act and assert
         testDAO.addItem(test1);
         testDAO.addItem(test2);
 
-        boolean removedItem = testDAO.removeItem(test1);
+        Item removedItem = testDAO.removeItem(test1);
         List<Item> inventoryAfterRemoval = testDAO.getInventory();
 
-        assertTrue(removedItem, "test1 should've been removed from inventory");
+        assertEquals(removedItem, test1, "test1 should've been removed from inventory");
         assertEquals(1, inventoryAfterRemoval.size(), "Should only have 1 item after removal");
         assertTrue(inventoryAfterRemoval.contains(test2), "Inventory should contain the Coconut Water");
         assertFalse(inventoryAfterRemoval.contains(test1), "Inventory should not contain the Arizona");
@@ -87,11 +90,13 @@ public class VMDAOImplTest {
         //arrange
         String testName1 = "Arizona Iced Tea";
         BigDecimal testCost1 = new BigDecimal("1.00");
-        Item test1 = new Item(testName1, testCost1);
+        int itemCt = 1;
+        Item test1 = new Item(testName1, testCost1, itemCt);
 
         String testName2 = "Coconut Water";
         BigDecimal testCost2 = new BigDecimal("2.99");
-        Item test2 = new Item(testName2, testCost2);
+        int itemCt2 = 1;
+        Item test2 = new Item(testName2, testCost2, itemCt2);
 
         //act and assert
         testDAO.addItem(test1);
@@ -114,7 +119,7 @@ public class VMDAOImplTest {
         //arrange
         String testName1 = "Arizona Iced Tea";
         BigDecimal testCost1 = new BigDecimal("1.00");
-        Item test1 = new Item(testName1, testCost1);
+        Item test1 = new Item(testName1, testCost1, 1);
 
         BigDecimal overpay = new BigDecimal("2.00");
 
@@ -144,7 +149,7 @@ public class VMDAOImplTest {
         //arrange
         String testName1 = "Arizona Iced Tea";
         BigDecimal testCost1 = new BigDecimal("1.00");
-        Item test1 = new Item(testName1, testCost1);
+        Item test1 = new Item(testName1, testCost1, 1);
 
         BigDecimal exactPay = new BigDecimal("1.00");
 
@@ -174,7 +179,7 @@ public class VMDAOImplTest {
         //arrange
         String testName1 = "Arizona Iced Tea";
         BigDecimal testCost1 = new BigDecimal("1.00");
-        Item test1 = new Item(testName1, testCost1);
+        Item test1 = new Item(testName1, testCost1, 1);
 
         BigDecimal underpay = new BigDecimal("0.50");
 
@@ -195,11 +200,11 @@ public class VMDAOImplTest {
         //arrange
         String testName1 = "Arizona Iced Tea";
         BigDecimal testCost1 = new BigDecimal("1.00");
-        Item test1 = new Item(testName1, testCost1);
+        Item test1 = new Item(testName1, testCost1, 1);
 
         String testName2 = "Coconut Water";
         BigDecimal testCost2 = new BigDecimal("2.99");
-        Item test2 = new Item(testName2, testCost2);
+        Item test2 = new Item(testName2, testCost2, 1);
 
         //act
         testDAO.addItem(test1);

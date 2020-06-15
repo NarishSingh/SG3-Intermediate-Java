@@ -50,7 +50,9 @@ public class VMView {
 
             allItems.stream()
                     .forEach((item) -> {
-                        io.print(item.getName() + " | $" + item.getCost());
+                        if (!(item.getItemCount() <= 0)) {
+                            io.print(item.getName() + " | $" + item.getCost());   
+                        }
                     });
 
             io.print("-------");
@@ -141,9 +143,10 @@ public class VMView {
     public Item getNewItemInfo() {
         String itemName = io.readString("Please enter item name: ").trim();
         BigDecimal itemCost = new BigDecimal(io.readString("Please enter item cost: $").trim());
+        int itemCount = io.readInt("How many are you adding to the machine?: ");
         itemCost.setScale(2, RoundingMode.HALF_UP);
 
-        return new Item(itemName, itemCost);
+        return new Item(itemName, itemCost, itemCount);
     }
 
     /**
@@ -153,7 +156,7 @@ public class VMView {
      */
     public void displayStockMachineSuccessBanner(int totalItems) {
         io.print("Item stocked in vending machine.");
-        io.print(totalItems + " items in stock");
+        io.print(totalItems + " product types in stock");
         io.readString("Press Enter to continue");
     }
 

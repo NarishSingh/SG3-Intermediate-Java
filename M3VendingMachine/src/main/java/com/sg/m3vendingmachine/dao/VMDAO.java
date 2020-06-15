@@ -18,7 +18,7 @@ public interface VMDAO {
      * @return {boolean} true if successfully added, false otherwise
      * @throws VendingPersistenceException if cannot write to inventory file
      */
-    boolean addItem(Item snackDrink) throws VendingPersistenceException;
+    Item addItem(Item snackDrink) throws VendingPersistenceException;
 
     /**
      * Remove an item from inventory when bought by user
@@ -28,7 +28,7 @@ public interface VMDAO {
      * @return {boolean} if item was removed or not
      * @throws VendingPersistenceException if cannot read in or write to file
      */
-    boolean removeItem(Item snackDrink) throws VendingPersistenceException;
+    Item removeItem(Item snackDrink) throws VendingPersistenceException;
 
     /**
      * Validate that an item exists in inventory

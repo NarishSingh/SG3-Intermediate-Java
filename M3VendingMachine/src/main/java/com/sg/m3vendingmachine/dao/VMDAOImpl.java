@@ -10,7 +10,8 @@ import java.util.*;
 
 public class VMDAOImpl implements VMDAO {
 
-    private List<Item> inventory = new ArrayList<>();
+//    private List<Item> inventory = new ArrayList<>();
+    private Map<String, Item> inventory = new HashMap<>();
     public final String INVENTORY_FILE;
     public static final String DELIMITER = "::";
 
@@ -27,17 +28,17 @@ public class VMDAOImpl implements VMDAO {
 
     /*INTERFACE IMPL*/
     @Override
-    public boolean addItem(Item snackDrink) throws VendingPersistenceException {
+    public Item addItem(Item snackDrink) throws VendingPersistenceException {
         loadInventory();
-        boolean added = inventory.add(snackDrink);
+        Item added = inventory.put(snackDrink.getName(), snackDrink);
         writeInventory();
 
         return added;
     }
 
     @Override
-    public boolean removeItem(Item snackDrink) throws VendingPersistenceException {
-        boolean removedItem = inventory.remove(snackDrink);
+    public Item removeItem(Item snackDrink) throws VendingPersistenceException {
+        Item removedItem = inventory.remove(snackDrink.getName());
         writeInventory();
         return removedItem;
     }
@@ -47,11 +48,16 @@ public class VMDAOImpl implements VMDAO {
             NoSuchItemExistsException {
         loadInventory();
 
+        /*
         Item matchingItem = inventory.stream()
                 .filter((item) -> item.getName().equals(itemName))
                 .findFirst()
                 .orElse(null);
 
+        */
+        
+        Item matchingItem = inventory.get(itemName);
+        
         if (matchingItem == null) {
             throw new NoSuchItemExistsException("No such item in inventory");
         } else {
@@ -62,7 +68,7 @@ public class VMDAOImpl implements VMDAO {
     @Override
     public List<Item> getInventory() throws VendingPersistenceException {
         loadInventory();
-        return inventory;
+        return new ArrayList<>(inventory.values());
     }
 
     @Override
@@ -79,7 +85,7 @@ public class VMDAOImpl implements VMDAO {
     public int inventoryCount() throws VendingPersistenceException {
         loadInventory();
 
-        Long itemCtLong = inventory.stream()
+        Long itemCtLong = inventory.values().stream()
                 .count();
 
         return itemCtLong.intValue();
@@ -94,7 +100,8 @@ public class VMDAOImpl implements VMDAO {
      */
     private String marshallItem(Item anItem) {
         String itemAsText = anItem.getName() + DELIMITER;
-        itemAsText += anItem.getCost().toString();
+        itemAsText += anItem.getCost().toString() + DELIMITER;
+        itemAsText += anItem.getItemCount();
 
         return itemAsText;
     }
@@ -111,8 +118,9 @@ public class VMDAOImpl implements VMDAO {
 
         String itemName = itemTokens[0];
         BigDecimal itemCost = new BigDecimal(itemTokens[1]);
+        int itemCount = Integer.parseInt(itemTokens[2]);
 
-        Item itemFromFile = new Item(itemName, itemCost);
+        Item itemFromFile = new Item(itemName, itemCost, itemCount);
 
         return itemFromFile;
     }
@@ -140,7 +148,7 @@ public class VMDAOImpl implements VMDAO {
             currentLine = scanner.nextLine();
             currentItem = unmarshallItem(currentLine);
 
-            inventory.add(currentItem);
+            inventory.put(currentItem.getName(), currentItem);
         }
 
         scanner.close();
@@ -157,7 +165,7 @@ public class VMDAOImpl implements VMDAO {
         try {
             out = new PrintWriter(new FileWriter(INVENTORY_FILE));
 
-            inventory.stream()
+            inventory.values().stream()
                     .forEach((item) -> {
                         String itemAsText = marshallItem(item);
                         out.println(itemAsText);
