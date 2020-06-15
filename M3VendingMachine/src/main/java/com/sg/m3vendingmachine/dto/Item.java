@@ -11,6 +11,7 @@ public class Item {
     /*fields*/
     private String name;
     private BigDecimal cost;
+    private int itemCount;
 
     /*ctor*/
     public Item(String name, BigDecimal cost) {
@@ -35,12 +36,22 @@ public class Item {
         this.cost = cost;
     }
 
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
     /*testing methods*/
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + Objects.hashCode(this.cost);
+        hash = 47 * hash + Objects.hashCode(this.name);
+        hash = 47 * hash + Objects.hashCode(this.cost);
+        hash = 47 * hash + this.itemCount;
         return hash;
     }
 
@@ -56,6 +67,9 @@ public class Item {
             return false;
         }
         final Item other = (Item) obj;
+        if (this.itemCount != other.itemCount) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -64,10 +78,5 @@ public class Item {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "Item{" + "name=" + name + ", cost=" + cost + '}';
-    }
-
+    
 }
